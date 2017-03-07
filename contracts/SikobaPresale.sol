@@ -77,10 +77,9 @@ contract SikobaPresale is owned {
     /// don't hold a set of unique participants but simply log partecipations.
     event LogParticipation(address indexed sender, uint value, uint timestamp, bool isPreallocation);
 
-    // @dev creating the contract needs two steps:
-    //       1. Set the value each preallocation address has submitted to the Sikoba bookmaker
-    //       2. Send the total amount of preallocated ether otherwise VM Exception: invalid JUMP
-    //
+    /// @dev creating the contract needs two steps:
+    ///       1. Set the value each preallocation address has submitted to the Sikoba bookmaker
+    ///       2. Send the total amount of preallocated ether otherwise VM Exception: invalid JUMP
     function SikobaPresale () payable {
         owner = msg.sender;
         //TODO: check if having 100 participants in preallocation would not run the contract out of gas on mainnet
@@ -99,11 +98,11 @@ contract SikobaPresale is owned {
         addBalance(0xcafebabe, 5 wei, true);
     }
 
-    // @notice Send at least `MINIMAL_AMOUNT_TO_SEND` and at most `MAXIMAL_AMOUNT_TO_SEND` ether to this contract
-    // @notice or the transaction will fail and the value will be given back.
-    // Timeframe: if `now` >= `START_DATE_PRESALE` and `now` <= `DEADLINE_DATE_PRESALE`
-    // `MAXIMAL_BALANCE_OF_PRESALE-balance` still payable.
-    //
+    /// @notice Send at least `MINIMAL_AMOUNT_TO_SEND` and at most `MAXIMAL_AMOUNT_TO_SEND` ether to this contract
+    /// @notice or the transaction will fail and the value will be given back.
+    /// Timeframe: if `now` >= `START_DATE_PRESALE` and `now` <= `DEADLINE_DATE_PRESALE`
+    /// `MAXIMAL_BALANCE_OF_PRESALE-balance` still payable.
+
     function () payable {
         //preconditions to be met:
 
@@ -123,9 +122,9 @@ contract SikobaPresale is owned {
     }
 
 
-    // @notice owner withdraws ether from presale
-    // @dev the owner can transfer ether anytime from this contract if the presale succeeded
-    //
+    /// @notice owner withdraws ether from presale
+    /// @dev the owner can transfer ether anytime from this contract if the presale succeeded
+
     function withdraw(uint value) external onlyowner payable {
 
         // ?? check if balance can be withdrawn,
@@ -145,9 +144,9 @@ contract SikobaPresale is owned {
         if (!success) throw;
     }
 
-    // @notice If `MINIMAL_BALANCE_OF_PRESALE` > `balance` after `DEADLINE_DATE_PRESALE` then you can withdraw your balance here
-    // @dev the owner can transfer ether anytime from this contract if the presale failed
-    //
+    /// @notice If `MINIMAL_BALANCE_OF_PRESALE` > `balance` after `DEADLINE_DATE_PRESALE` then you can withdraw your balance here
+    /// @dev the owner can transfer ether anytime from this contract if the presale failed
+
     function withdrawYourAssetsIfPresaleFailed(uint value) external {
 
         // ?? check if balance can be withdrawn,
@@ -174,8 +173,7 @@ contract SikobaPresale is owned {
     }
 
 
-    // @dev private function to increment balances
-    //
+    /// @dev private function to increment balances
     function addBalance(address participant, uint valueInWei, bool isPreallocation) private{
 
         // add amount to the balance of the participant
@@ -188,23 +186,23 @@ contract SikobaPresale is owned {
 
     ////////////////////////////////////////////////////////////////////////////
 
-    // @dev Simple Assertion like in Unit Testing frameworks.
+    /// @dev Simple Assertion like in Unit Testing frameworks.
     function assertEquals(uint expectedValue, uint actualValue) private constant {
         if (expectedValue != actualValue) throw;
     }
 
-    // @dev if an addition is used for incrementing a base value, in order to detect an overflow
-    //      we can simply check if the result is smaller than the base value.
-    // TODO: double check edge cases
+    /// @dev if an addition is used for incrementing a base value, in order to detect an overflow
+    ///      we can simply check if the result is smaller than the base value.
+    /// TODO: double check edge cases
     function safeIncrement(uint base, uint increment) private constant returns (uint) {
       uint result = base + increment;
       if (result < base) throw;
       return result;
     }
 
-    // @dev if a subtraction is used for decrementing a base value, in order to detect an underflow
-    //      we can simply check if the result is bigger than the base value.
-    // TODO: double check edge cases
+    /// @dev if a subtraction is used for decrementing a base value, in order to detect an underflow
+    ///      we can simply check if the result is bigger than the base value.
+    /// TODO: double check edge cases
     function safeDecrement(uint base, uint increment) private constant returns (uint) {
       uint result = base - increment;
       if (result > base) throw;
