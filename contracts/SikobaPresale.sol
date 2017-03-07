@@ -1,4 +1,4 @@
-// DO NOT use the newest version of solidity but an old stable one, 
+// DO NOT use the newest version of solidity but an old stable one,
 // check the bug lists of in the release anouncement of solidity after this versions.
 
 pragma solidity ^0.4.8;
@@ -30,6 +30,8 @@ pragma solidity ^0.4.8;
  **/
 
 import "./owned.sol";
+
+
 /// @title Sikoba Presale Contract
 /// @author Roland Kofler, Alex Kampa
 /// @dev changes to this contract will invalidate any security audits done before. It is MANDATORY to protocol audits in the "Security reviews done" section
@@ -44,25 +46,25 @@ import "./owned.sol";
 ///  2017 MAR 7 - Alex Kampa                - some code clean up, removed restriction of MINIMAL_AMOUNT_TO_SEND for preallocations
 
 
-contract SikobaPresale is owned{
+contract SikobaPresale is owned {
 
     //TODO: substitute all wei values with ether values before launching, if they are set for not spending too much on ropsten
 
     // Minimal and maximal amounts per transaction for public participants
     //TODO: check if for test reasons there is no wrong amount
-    uint public constant MINIMAL_AMOUNT_TO_SEND =   5 ether; 
+    uint public constant MINIMAL_AMOUNT_TO_SEND =   5 ether;
     uint public constant MAXIMAL_AMOUNT_TO_SEND = 250 ether;
 
     // Minimal and maximal goals of the presale
     // If the minimum is not reached at the end of the presale, senders can withdraw via withdrawYourAssetsIfPresaleFailed()
     //TODO: before launch, adjust these values to approximate the desired EUR at current rates
     uint public constant MINIMAL_BALANCE_OF_PRESALE =  9000 ether;
-    uint public constant MAXIMAL_BALANCE_OF_PRESALE = 18000 ether; 
-    
+    uint public constant MAXIMAL_BALANCE_OF_PRESALE = 18000 ether;
+
     // Public presale period
     // Starts on 04/05/2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
     // Ends 2 weeks after the start
-    uint public constant START_DATE_PRESALE = 1491393600; 
+    uint public constant START_DATE_PRESALE = 1491393600;
     uint public constant DEADLINE_DATE_PRESALE = START_DATE_PRESALE + 2 weeks ;
 
     /// @notice The balances of all submitted Ether, includes preallocated Ether and the Ether submitted during the public phase
@@ -72,21 +74,21 @@ contract SikobaPresale is owned{
     /// @notice a log of participations in the presale and preallocation
     /// @dev helps to extract the addresses form balanceOf.
     /// Because we want to avoid loops to prevent 'out of gas' runtime bugs we
-    /// don't hold a set of unique participants but simply log participations.
-    event LogParticipation( address indexed sender, uint value, uint timestamp, bool isPreallocation);
+    /// don't hold a set of unique participants but simply log partecipations.
+    event LogParticipation(address indexed sender, uint value, uint timestamp, bool isPreallocation);
 
     // @dev creating the contract needs two steps:
     //       1. Set the value each preallocation address has submitted to the Sikoba bookmaker
     //       2. Send the total amount of preallocated ether otherwise VM Exception: invalid JUMP
     //
-    function SikobaPresale () payable{
-        //TODO: verify if implicitly owned by creator because constructor of owner is called.
+    function SikobaPresale () payable {
+        owner = msg.sender;
         //TODO: check if having 100 participants in preallocation would not run the contract out of gas on mainnet
 
-        //TODO exchange the following example with the real preallocation:
+        //TODO: exchange the following example with the real preallocation:
         // Preallocation Ether must be sent on construction or contract creation fails
         //
-        // Declare sum of preallocation balances 
+        // Declare sum of preallocation balances
         // and verify that the actual amount sent corresponds
         uint totalPreallocationInWei = 15 ether;
         assertEquals(totalPreallocationInWei, msg.value);
@@ -95,16 +97,14 @@ contract SikobaPresale is owned{
         // Pre-allocations (hard-coded based on ETH values previously received)
         addBalance(0xdeadbeef, 10 wei, true);
         addBalance(0xcafebabe, 5 wei, true);
-
     }
 
-    // @notice Send at least `MINIMAL_AMOUNT_TO_SEND` and at most `MAXIMAL_AMOUNT_TO_SEND` ether to this contract 
+    // @notice Send at least `MINIMAL_AMOUNT_TO_SEND` and at most `MAXIMAL_AMOUNT_TO_SEND` ether to this contract
     // @notice or the transaction will fail and the value will be given back.
     // Timeframe: if `now` >= `START_DATE_PRESALE` and `now` <= `DEADLINE_DATE_PRESALE`
     // `MAXIMAL_BALANCE_OF_PRESALE-balance` still payable.
     //
-    function () payable{
-
+    function () payable {
         //preconditions to be met:
 
         // only during the public presale period
@@ -114,7 +114,7 @@ contract SikobaPresale is owned{
         // the value sent must be between the minimal and maximal amounts accepted
         if (msg.value < MINIMAL_AMOUNT_TO_SEND) throw;
         if (msg.value > MAXIMAL_AMOUNT_TO_SEND) throw;
-        
+
         // check if maximum presale amount has been met already
         if (safeIncrement(this.balance, msg.value) > MAXIMAL_BALANCE_OF_PRESALE) throw;
 
@@ -126,7 +126,7 @@ contract SikobaPresale is owned{
     // @notice owner withdraws ether from presale
     // @dev the owner can transfer ether anytime from this contract if the presale succeeded
     //
-    function withdraw( uint value) external onlyowner payable{
+    function withdraw(uint value) external onlyowner payable {
 
         // ?? check if balance can be withdrawn,
         // ?? TODO: probably redundand to basic ethereum checks and can be removed after clarification
@@ -189,14 +189,14 @@ contract SikobaPresale is owned{
     ////////////////////////////////////////////////////////////////////////////
 
     // @dev Simple Assertion like in Unit Testing frameworks.
-    function assertEquals(uint expectedValue, uint actualValue ) private constant{
+    function assertEquals(uint expectedValue, uint actualValue) private constant {
         if (expectedValue != actualValue) throw;
     }
 
     // @dev if an addition is used for incrementing a base value, in order to detect an overflow
     //      we can simply check if the result is smaller than the base value.
     // TODO: double check edge cases
-    function safeIncrement(uint base, uint increment) private constant returns (uint){
+    function safeIncrement(uint base, uint increment) private constant returns (uint) {
       uint result = base + increment;
       if (result < base) throw;
       return result;
@@ -205,7 +205,7 @@ contract SikobaPresale is owned{
     // @dev if a subtraction is used for decrementing a base value, in order to detect an underflow
     //      we can simply check if the result is bigger than the base value.
     // TODO: double check edge cases
-    function safeDecrement(uint base, uint increment) private constant returns (uint){
+    function safeDecrement(uint base, uint increment) private constant returns (uint) {
       uint result = base - increment;
       if (result > base) throw;
       return result;
