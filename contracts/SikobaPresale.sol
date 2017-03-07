@@ -72,7 +72,7 @@ contract SikobaPresale is owned{
     /// @notice a log of participations in the presale and preallocation
     /// @dev helps to extract the addresses form balanceOf.
     /// Because we want to avoid loops to prevent 'out of gas' runtime bugs we
-    /// don't hold a set of unique participants but simply log partecipations.
+    /// don't hold a set of unique participants but simply log participations.
     event LogParticipation( address indexed sender, uint value, uint timestamp, bool isPreallocation);
 
     // @dev creating the contract needs two steps:
@@ -182,7 +182,7 @@ contract SikobaPresale is owned{
         balanceOf[participant] = safeIncrement(balanceOf[participant], valueInWei);
 
         // log the participation to easily gather them for furter processing
-        LogPartecipation(participant, valueInWei, now, isPreallocation);
+        LogParticipation(participant, valueInWei, now, isPreallocation);
 
     }
 
