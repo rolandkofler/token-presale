@@ -48,21 +48,20 @@ contract SikobaPresale is owned{
 
     //TODO: substitute all wei values with ether values before launching, if they are set for not spending too much on ropsten
 
-    // Public participants need to send a minimum of 5 and a maximum of 250 ether
-    // (but they can send multiple transctions)
+    // Minimal and maximal amounts per transaction for public participants
     //TODO: check if for test reasons there is no wrong amount
     uint public constant MINIMAL_AMOUNT_TO_SEND =   5 ether; 
     uint public constant MAXIMAL_AMOUNT_TO_SEND = 250 ether;
 
-    // Minimal goal of the presale is 9000 ether, the maximum 18000 ether.
-    // If the minimum is not reached, senders can withdraw via withdrawYourAssetsIfPresaleFailed()
+    // Minimal and maximal goals of the presale
+    // If the minimum is not reached at the end of the presale, senders can withdraw via withdrawYourAssetsIfPresaleFailed()
     //TODO: before launch, adjust these values to approximate the desired EUR at current rates
     uint public constant MINIMAL_BALANCE_OF_PRESALE =  9000 ether;
     uint public constant MAXIMAL_BALANCE_OF_PRESALE = 18000 ether; 
     
-    // Start and end dates of the presale
-    // The presale starts on 04/05/2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
-    // It ends 2 weeks after the start
+    // Public presale period
+    // Starts on 04/05/2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
+    // Ends 2 weeks after the start
     uint public constant START_DATE_PRESALE = 1491393600; 
     uint public constant DEADLINE_DATE_PRESALE = START_DATE_PRESALE + 2 weeks ;
 
