@@ -1,4 +1,6 @@
-// DO NOT use the newest version of solidity but an old stable one, check the bug lists of in the release anouncement of solidity after this versions.
+// DO NOT use the newest version of solidity but an old stable one, 
+// check the bug lists of in the release anouncement of solidity after this versions.
+
 pragma solidity ^0.4.8;
 
 /**
@@ -44,7 +46,7 @@ import "./owned.sol";
 
 contract SikobaPresale is owned{
 
-    //TODO: substitute all wei values with ether values before launching, if they are set for not spending to much on ropsten
+    //TODO: substitute all wei values with ether values before launching, if they are set for not spending too much on ropsten
 
     // Public participants need to send a minimum of 5 and a maximum of 250 ether
     // (but they can send multiple transctions)
@@ -54,7 +56,7 @@ contract SikobaPresale is owned{
 
     // Minimal goal of the presale is 9000 ether, the maximum 18000 ether.
     // If the minimum is not reached, senders can withdraw via withdrawYourAssetsIfPresaleFailed()
-    //TODO: potentially change the value to represent more or less the desired EUR at current rate
+    //TODO: before launch, adjust these values to approximate the desired EUR at current rates
     uint public constant MINIMAL_BALANCE_OF_PRESALE =  9000 ether;
     uint public constant MAXIMAL_BALANCE_OF_PRESALE = 18000 ether; 
     
@@ -64,7 +66,7 @@ contract SikobaPresale is owned{
     uint public constant START_DATE_PRESALE = 1491393600; 
     uint public constant DEADLINE_DATE_PRESALE = START_DATE_PRESALE + 2 weeks ;
 
-    /// @notice The balances of all submitted Ether, includes the preallocated ether and the ether submitted during the public phase
+    /// @notice The balances of all submitted Ether, includes preallocated Ether and the Ether submitted during the public phase
     /// @dev name complies with ERC20 token standard, etherscan for example will recognize this and show the balances of the address
     mapping (address => uint) public balanceOf;
 
@@ -74,15 +76,17 @@ contract SikobaPresale is owned{
     /// don't hold a set of unique participants but simply log partecipations.
     event LogPartecipation( address indexed sender, uint value, uint timestamp, bool isPreallocation);
 
-    /// @dev creating the contract needs two steps:
-    ///       1. Set the value each preallocation address has submitted to the Sikoba bookmaker
-    ///       2. Send the total amount of preallocated ether otherwise VM Exception: invalid JUMP
+    // @dev creating the contract needs two steps:
+    //       1. Set the value each preallocation address has submitted to the Sikoba bookmaker
+    //       2. Send the total amount of preallocated ether otherwise VM Exception: invalid JUMP
+    //
     function SikobaPresale () payable{
         //TODO: verify if implicitly owned by creator because constructor of owner is called.
         //TODO: check if having 100 participants in preallocation would not run the contract out of gas on mainnet
 
         //TODO exchange the following example with the real preallocation:
         // Preallocation Ether must be sent on construction or contract creation fails
+        //
         // Declare sum of preallocation balances 
         // and verify that the actual amount sent corresponds
         uint totalPreallocationInWei = 15 ether;
@@ -95,9 +99,11 @@ contract SikobaPresale is owned{
 
     }
 
-    /// @notice Send at least `MINIMAL_AMOUNT_TO_SEND` ether to this contract or the transaction will fail and the value will be given back.
-    /// Timeframe: if `now` >= `START_DATE_PRESALE` and `now` <= `DEADLINE_DATE_PRESALE`
-    /// `MAXIMAL_BALANCE_OF_PRESALE-balance` still payable.
+    // @notice Send at least `MINIMAL_AMOUNT_TO_SEND` and at most `MAXIMAL_AMOUNT_TO_SEND` ether to this contract 
+    // @notice or the transaction will fail and the value will be given back.
+    // Timeframe: if `now` >= `START_DATE_PRESALE` and `now` <= `DEADLINE_DATE_PRESALE`
+    // `MAXIMAL_BALANCE_OF_PRESALE-balance` still payable.
+    //
     function () payable{
 
         //preconditions to be met:
@@ -118,8 +124,9 @@ contract SikobaPresale is owned{
     }
 
 
-    /// @notice owner withdraws ether from presale
-    /// @dev the owner can transfer ether anytime from this contract
+    // @notice owner withdraws ether from presale
+    // @dev the owner can transfer ether anytime from this contract if the presale succeeded
+    //
     function withdraw( uint value) external onlyowner payable{
 
         // ?? check if balance can be withdrawn,
@@ -140,7 +147,8 @@ contract SikobaPresale is owned{
     }
 
     // @notice If `MINIMAL_BALANCE_OF_PRESALE` > `balance` after `DEADLINE_DATE_PRESALE` then you can withdraw your balance here
-    // @dev the owner can transfer ether anytime from this contract
+    // @dev the owner can transfer ether anytime from this contract if the presale failed
+    //
     function withdrawYourAssetsIfPresaleFailed(uint value) external {
 
         // ?? check if balance can be withdrawn,
@@ -168,6 +176,7 @@ contract SikobaPresale is owned{
 
 
     // @dev private function to increment balances
+    //
     function addBalance(address participant, uint valueInWei, bool isPreallocation) private{
 
         // add amount to the balance of the participant
