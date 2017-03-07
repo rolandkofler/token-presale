@@ -73,7 +73,7 @@ contract SikobaPresale is owned{
     /// @dev helps to extract the addresses form balanceOf.
     /// Because we want to avoid loops to prevent 'out of gas' runtime bugs we
     /// don't hold a set of unique participants but simply log partecipations.
-    event LogPartecipation( address indexed sender, uint value, uint timestamp, bool isPreallocation);
+    event LogParticipation( address indexed sender, uint value, uint timestamp, bool isPreallocation);
 
     // @dev creating the contract needs two steps:
     //       1. Set the value each preallocation address has submitted to the Sikoba bookmaker
