@@ -60,8 +60,8 @@ contract SikobaPresale is owned {
     // Minimal and maximal goals of the presale
     // If the minimum is not reached at the end of the presale, senders can withdraw via withdrawYourAssetsIfPresaleFailed()
     //TODO: before launch, adjust these values to approximate the desired EUR at current rates
-    uint public constant MINIMAL_BALANCE_OF_PRESALE =  9000 ether;
-    uint public constant MAXIMAL_BALANCE_OF_PRESALE = 18000 ether;
+    uint public constant MINIMAL_BALANCE_OF_PRESALE =  7000 ether;
+    uint public constant MAXIMAL_BALANCE_OF_PRESALE = 14000 ether;
 
     // Public presale period
     // Starts on 04/05/2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
