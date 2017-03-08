@@ -48,7 +48,7 @@ import "./owned.sol";
 
 contract SikobaPresale is owned {
     //remember total balance of contract
-    uint public totalBalance;
+    uint public totalFunding;
 
     //TODO: substitute all wei values with ether values before launching, if they are set for not spending too much on ropsten
 
@@ -117,7 +117,7 @@ contract SikobaPresale is owned {
         if (msg.value > MAXIMAL_AMOUNT_TO_SEND) throw;
 
         // check if maximum presale amount has been met already
-        if (safeIncrement(totalBalance, msg.value) > MAXIMAL_BALANCE_OF_PRESALE) throw;
+        if (safeIncrement(totalFunding, msg.value) > MAXIMAL_BALANCE_OF_PRESALE) throw;
 
         // register payment
         addBalance(msg.sender, msg.value, false);
@@ -133,7 +133,7 @@ contract SikobaPresale is owned {
         // only after the public deadline has been reached
         // and minimal presale goal is reached
         if (now <= DEADLINE_DATE_PRESALE) throw;
-        if (totalBalance < MINIMAL_BALANCE_OF_PRESALE) throw;
+        if (totalFunding < MINIMAL_BALANCE_OF_PRESALE) throw;
 
         // withdraw the amount wanted
         bool success = owner.send(value);
@@ -151,7 +151,7 @@ contract SikobaPresale is owned {
         // only after the public deadline has been reached
         // and minimal presale goal was not reached
         if (now <= DEADLINE_DATE_PRESALE) throw;
-        if (totalBalance >= MINIMAL_BALANCE_OF_PRESALE) throw;
+        if (totalFunding >= MINIMAL_BALANCE_OF_PRESALE) throw;
 
         // sender must have sent the amount he wants to withdraw
         if (balanceOf[msg.sender] < value) throw;
@@ -174,7 +174,7 @@ contract SikobaPresale is owned {
         balanceOf[participant] = safeIncrement(balanceOf[participant], valueInWei);
 
         // add to total balance
-        totalBalance = safeIncrement(totalBalance, valueInWei);
+        totalFunding = safeIncrement(totalFunding, valueInWei);
 
         // log the participation to easily gather them for furter processing
         LogParticipation(participant, valueInWei, now, isPreallocation);
