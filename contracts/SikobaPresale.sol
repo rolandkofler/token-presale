@@ -1,6 +1,3 @@
-// DO NOT use the newest version of solidity but an old stable one,
-// check the bug lists of in the release anouncement of solidity after this versions.
-
 pragma solidity ^0.4.8;
 
 /**
@@ -8,7 +5,7 @@ pragma solidity ^0.4.8;
  *
  * Version 0.1
  *
- * Author Roland Kofler, Alex Kampa
+ * Author Roland Kofler, Alex Kampa, Bok 'Bokky Poo Bah' Khoo
  *
  * MIT LICENSE Copyright 2016 Sikoba LTD
  *
@@ -29,180 +26,175 @@ pragma solidity ^0.4.8;
  * SOFTWARE.
  **/
 
-import "./owned.sol";
+contract Owned {
+    address public owner;
 
+    function Owned() {
+        owner = msg.sender;
+    }
 
+    modifier onlyOwner() {
+        if (msg.sender != owner) {
+            throw;
+        }
+        _;
+    }
+}
+
+/// ----------------------------------------------------------------------------------------
 /// @title Sikoba Presale Contract
-/// @author Roland Kofler, Alex Kampa
-/// @dev changes to this contract will invalidate any security audits done before. It is MANDATORY to protocol audits in the "Security reviews done" section
+/// @author Roland Kofler, Alex Kampa, Bok 'Bokky Poo Bah' Khoo
+/// @dev Changes to this contract will invalidate any security audits done before.
+/// It is MANDATORY to protocol audits in the "Security reviews done" section
 ///  # Security checklists to use in each review:
 ///  - Consensys checklist https://github.com/ConsenSys/smart-contract-best-practices
 ///  - Roland Kofler's checklist https://github.com/rolandkofler/ether-security
-///  - read all of the code and use creative and lateral thinking to disccover bugs
+///  - Read all of the code and use creative and lateral thinking to discover bugs
 ///  # Security reviews done:
-///  Date         Auditors                 Short summary of the review executed
-///  2017 MAR 3 - Roland Kofler             - NO SECURITY REVIEW DONE
-///  2017 MAR 7 - Roland Kofler, Alex Kampa - informal Security Review, added overflow protections, fixed wrong inequality operatiors, added maximal amount per transactions
-///  2017 MAR 7 - Alex Kampa                - some code clean up, removed restriction of MINIMAL_AMOUNT_TO_SEND for preallocations
+///  Date         Auditors       Short summary of the review executed
+///  2017 MAR 3 - Roland Kofler  - NO SECURITY REVIEW DONE
+///  2017 MAR 7 - Roland Kofler, - Informal Security Review; added overflow protections;
+///               Alex Kampa       fixed wrong inequality operators; added maximum amount
+//                                 per transactions
+///  2017 MAR 7 - Alex Kampa     - Some code clean up; removed restriction of
+///                                MINIMUM_PARTICIPATION_AMOUNT for preallocations
+///  2017 MAR 8 - Bok Khoo       - Complete security review and modifications
+///  2017 MAR 9 - Roland Kofler  - Check the diffs between MAR 8 and MAR 7 versions
+/// ----------------------------------------------------------------------------------------
+contract SikobaPresale is Owned {
+    // -------------------------------------------------------------------------------------
+    // TODO Before deployment of contract to Mainnet
+    // 1. Confirm MINIMUM_PARTICIPATION_AMOUNT and MAXIMUM_PARTICIPATION_AMOUNT below
+    // 2. Adjust PRESALE_MINIMUM_FUNDING and PRESALE_MAXIMUM_FUNDING to desired EUR
+    //    equivalents
+    // 3. Adjust PRESALE_START_DATE and confirm the presale period
+    // 4. Update TOTAL_PREALLOCATION_IN_WEI to the total preallocations received
+    // 5. Add each preallocation address and funding amount from the Sikoba bookmaker
+    //    to the constructor function
+    // 6. Test the deployment to a dev blockchain or Testnet to confirm the constructor
+    //    will not run out of gas as this will vary with the number of preallocation
+    //    account entries
+    // 7. A stable version of Solidity has been used. Check for any major bugs in the
+    //    Solidity release announcements after this version.
+    // 8. Remember to send the preallocated funds when deploying the contract!
+    // -------------------------------------------------------------------------------------
 
+    // Keep track of the total funding amount
+    uint256 public totalFunding;
 
-contract SikobaPresale is owned {
-    //remember total balance of contract
-    uint public totalFunding;
+    // Minimum and maximum amounts per transaction for public participants
+    uint256 public constant MINIMUM_PARTICIPATION_AMOUNT =   5 ether;
+    uint256 public constant MAXIMUM_PARTICIPATION_AMOUNT = 250 ether;
 
-    //TODO: substitute all wei values with ether values before launching, if they are set for not spending too much on ropsten
+    // Minimum and maximum goals of the presale
+    uint256 public constant PRESALE_MINIMUM_FUNDING =  9000 ether;
+    uint256 public constant PRESALE_MAXIMUM_FUNDING = 18000 ether;
 
-    // Minimal and maximal amounts per transaction for public participants
-    //TODO: check if for test reasons there is no wrong amount
-    uint public constant MINIMAL_AMOUNT_TO_SEND =   5 ether;
-    uint public constant MAXIMAL_AMOUNT_TO_SEND = 250 ether;
-
-    // Minimal and maximal goals of the presale
-    // If the minimum is not reached at the end of the presale, senders can withdraw via withdrawYourAssetsIfPresaleFailed()
-    //TODO: before launch, adjust these values to approximate the desired EUR at current rates
-    uint public constant MINIMAL_BALANCE_OF_PRESALE =  7000 ether;
-    uint public constant MAXIMAL_BALANCE_OF_PRESALE = 14000 ether;
+    // Total preallocation in wei
+    uint256 public constant TOTAL_PREALLOCATION_IN_WEI = 15 ether;
 
     // Public presale period
-    // Starts on 04/05/2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
+    // Starts 04/05/2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
     // Ends 2 weeks after the start
-    uint public constant START_DATE_PRESALE = 1491393600;
-    uint public constant DEADLINE_DATE_PRESALE = START_DATE_PRESALE + 2 weeks ;
+    uint256 public constant PRESALE_START_DATE = 1491393600;
+    uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 2 weeks;
 
-    /// @notice The balances of all submitted Ether, includes preallocated Ether and the Ether submitted during the public phase
-    /// @dev name complies with ERC20 token standard, etherscan for example will recognize this and show the balances of the address
-    mapping (address => uint) public balanceOf;
+    /// @notice Keep track of all participants contributions, including both the
+    ///         preallocation and public phases
+    /// @dev Name complies with ERC20 token standard, etherscan for example will recognize
+    ///      this and show the balances of the address
+    mapping (address => uint256) public balanceOf;
 
-    /// @notice a log of participations in the presale and preallocation
-    /// @dev helps to extract the addresses form balanceOf.
-    /// Because we want to avoid loops to prevent 'out of gas' runtime bugs we
-    /// don't hold a set of unique participants but simply log partecipations.
-    event LogParticipation(address indexed sender, uint value, uint timestamp, bool isPreallocation);
+    /// @notice Log an event for each funding contribution, including the preallocated funds
+    ///         and funds submitted during the public phase
+    event LogParticipation(address indexed sender, uint256 value, uint256 timestamp, bool isPreallocation);
 
-    /// @dev creating the contract needs two steps:
-    ///       1. Set the value each preallocation address has submitted to the Sikoba bookmaker
-    ///       2. Send the total amount of preallocated ether otherwise VM Exception: invalid JUMP
     function SikobaPresale () payable {
-        owner = msg.sender;
-        //TODO: check if having 100 participants in preallocation would not run the contract out of gas on mainnet
-
-        //TODO: exchange the following example with the real preallocation:
-        // Preallocation Ether must be sent on construction or contract creation fails
-        //
-        // Declare sum of preallocation balances
-        // and verify that the actual amount sent corresponds
-        uint totalPreallocationInWei = 15 ether;
-        assertEquals(totalPreallocationInWei, msg.value);
-
-        //TODO: exchange with real address and ether value
-        // Pre-allocations (hard-coded based on ETH values previously received)
+        assertEquals(TOTAL_PREALLOCATION_IN_WEI, msg.value);
+        // Pre-allocations
         addBalance(0xdeadbeef, 10 wei, true);
         addBalance(0xcafebabe, 5 wei, true);
+        // TODO: Check the following line
+        assertEquals(TOTAL_PREALLOCATION_IN_WEI, totalFunding);
     }
 
-    /// @notice Send at least `MINIMAL_AMOUNT_TO_SEND` and at most `MAXIMAL_AMOUNT_TO_SEND` ether to this contract
-    /// @notice or the transaction will fail and the value will be given back.
-    /// Timeframe: if `now` >= `START_DATE_PRESALE` and `now` <= `DEADLINE_DATE_PRESALE`
-    /// `MAXIMAL_BALANCE_OF_PRESALE-balance` still payable.
-
+    /// @notice A participant sends a contribution to the contract's address
+    ///         between the PRESALE_STATE_DATE and the PRESALE_END_DATE
+    /// @notice Only contributions between the MINIMUM_PARTICIPATION_AMOUNT and
+    ///         MAXIMUM_PARTICIPATION_AMOUNT are accepted. Otherwise the transaction
+    ///         is rejected and contributed amount is returned to the participant's
+    ///         account
+    /// @notice A participant's contribution will be rejected if the presale
+    ///         has been funded to the maximum amount
     function () payable {
-        //preconditions to be met:
-
-        // only during the public presale period
-        if (now < START_DATE_PRESALE) throw;
-        if (now > DEADLINE_DATE_PRESALE) throw;
-
-        // the value sent must be between the minimal and maximal amounts accepted
-        if (msg.value < MINIMAL_AMOUNT_TO_SEND) throw;
-        if (msg.value > MAXIMAL_AMOUNT_TO_SEND) throw;
-
-        // check if maximum presale amount has been met already
-        if (safeIncrement(totalFunding, msg.value) > MAXIMAL_BALANCE_OF_PRESALE) throw;
-
-        // register payment
+        // A participant cannot send funds before the presale start date
+        if (now < PRESALE_START_DATE) throw;
+        // A participant cannot send funds after the presale end date
+        if (now > PRESALE_END_DATE) throw;
+        // A participant cannot send less than the minimum amount
+        if (msg.value < MINIMUM_PARTICIPATION_AMOUNT) throw;
+        // A participant cannot send more than the maximum amount
+        if (msg.value > MAXIMUM_PARTICIPATION_AMOUNT) throw;
+        // A participant cannot send funds if the presale has been reached the maximum
+        // funding amount
+        if (safeIncrement(totalFunding, msg.value) > PRESALE_MAXIMUM_FUNDING) throw;
+        // Register the participant's contribution
         addBalance(msg.sender, msg.value, false);
     }
 
-
-    /// @notice owner withdraws ether from presale
-    /// @dev the owner can transfer ether anytime from this contract if the presale succeeded
-
-    function withdraw(uint value) external onlyowner payable {
-
-        // withdrawal IF PRESALE SUCCEEDED
-        // only after the public deadline has been reached
-        // and minimal presale goal is reached
-        if (now <= DEADLINE_DATE_PRESALE) throw;
-        if (totalFunding < MINIMAL_BALANCE_OF_PRESALE) throw;
-
-        // withdraw the amount wanted
-        bool success = owner.send(value);
-
-        // basic check if sending failed, not really needed but good custom.
-        if (!success) throw;
+    /// @notice The owner can withdraw ethers after the presale has completed,
+    ///         only if the minimum funding amount has been reached
+    function ownerWithdraw(uint256 value) external onlyOwner payable {
+        // The owner cannot withdraw before the presale ends
+        if (now <= PRESALE_END_DATE) throw;
+        // The owner cannot withdraw if the presale did not reach the minimum funding amount
+        if (totalFunding < PRESALE_MINIMUM_FUNDING) throw;
+        // Withdraw the amount requested
+        if (!owner.send(value)) throw;
     }
 
-    /// @notice If `MINIMAL_BALANCE_OF_PRESALE` > `balance` after `DEADLINE_DATE_PRESALE` then you can withdraw your balance here
-    /// @dev the owner can transfer ether anytime from this contract if the presale failed
-
-    function withdrawYourAssetsIfPresaleFailed(uint value) external {
-
-        // withdrawal IF PRESALE FAILED
-        // only after the public deadline has been reached
-        // and minimal presale goal was not reached
-        if (now <= DEADLINE_DATE_PRESALE) throw;
-        if (totalFunding >= MINIMAL_BALANCE_OF_PRESALE) throw;
-
-        // sender must have sent the amount he wants to withdraw
+    /// @notice The participant will need to withdraw their funds from this contract if
+    ///         the presale has failed by not reaching the minimum funding amount
+    function participantWithdrawIfPresaleFailed(uint256 value) external {
+        // Participant cannot withdraw before the presale ends
+        if (now <= PRESALE_END_DATE) throw;
+        // Participant cannot withdraw if the minimum funding amount has been reached
+        if (totalFunding >= PRESALE_MINIMUM_FUNDING) throw;
+        // Participant can only withdraw an amount up to their contributed balance
         if (balanceOf[msg.sender] < value) throw;
-
-        // decrement the balance of the sender by the claimed amount
+        // Participant's balance is reduced by the claimed amount.
         balanceOf[msg.sender] = safeDecrement(balanceOf[msg.sender], value);
-
-        // withdraw the amount wanted
-        bool success= msg.sender.send(value);
-
-        // basic check if sending failed, not really needed but good custom.
-        if (!success) throw;
+        // Send ethers back to the participant's account
+        if (!msg.sender.send(value)) throw;
     }
 
-
-    /// @dev private function to increment balances
-    function addBalance(address participant, uint valueInWei, bool isPreallocation) private{
-
-        // add amount to the balance of the participant
-        balanceOf[participant] = safeIncrement(balanceOf[participant], valueInWei);
-
-        // add to total balance
-        totalFunding = safeIncrement(totalFunding, valueInWei);
-
-        // log the participation to easily gather them for furter processing
-        LogParticipation(participant, valueInWei, now, isPreallocation);
-
+    /// @dev Keep track of participants contributions and the total funding amount
+    function addBalance(address participant, uint256 value, bool isPreallocation) private {
+        // Participant's balance is increased by the sent amount
+        balanceOf[participant] = safeIncrement(balanceOf[participant], value);
+        // Keep track of the total funding amount
+        totalFunding = safeIncrement(totalFunding, value);
+        // Log an event of the participant's contribution
+        LogParticipation(participant, value, now, isPreallocation);
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-
-    /// @dev Simple Assertion like in Unit Testing frameworks.
-    function assertEquals(uint expectedValue, uint actualValue) private constant {
+    /// @dev Throw an exception if the amounts are not equal
+    function assertEquals(uint256 expectedValue, uint256 actualValue) private constant {
         if (expectedValue != actualValue) throw;
     }
 
-    /// @dev if an addition is used for incrementing a base value, in order to detect an overflow
-    ///      we can simply check if the result is smaller than the base value.
-    /// TODO: double check edge cases
-    function safeIncrement(uint base, uint increment) private constant returns (uint) {
-      uint result = base + increment;
-      if (result < base) throw;
-      return result;
+    /// @dev Add a number to a base value. Detect overflows by checking the result is larger
+    ///      than the original base value.
+    function safeIncrement(uint256 base, uint256 increment) private constant returns (uint256) {
+        uint256 result = base + increment;
+        if (result < base) throw;
+        return result;
     }
 
-    /// @dev if a subtraction is used for decrementing a base value, in order to detect an underflow
-    ///      we can simply check if the result is bigger than the base value.
-    /// TODO: double check edge cases
-    function safeDecrement(uint base, uint increment) private constant returns (uint) {
-      uint result = base - increment;
-      if (result > base) throw;
-      return result;
+    /// @dev Subtract a number from a base value. Detect underflows by checking that the result
+    ///      is smaller than the original base value
+    function safeDecrement(uint256 base, uint256 increment) private constant returns (uint256) {
+        uint256 result = base - increment;
+        if (result > base) throw;
+        return result;
     }
-}
