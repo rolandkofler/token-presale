@@ -198,3 +198,4 @@ contract SikobaPresale is Owned {
         if (result > base) throw;
         return result;
     }
+}
