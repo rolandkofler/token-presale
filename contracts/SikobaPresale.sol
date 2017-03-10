@@ -5,7 +5,7 @@ pragma solidity ^0.4.8;
  *
  * Version 0.1
  *
- * Author Roland Kofler, Alex Kampa, Bok 'Bokky Poo Bah' Khoo
+ * Author Roland Kofler, Alex Kampa, Bok 'BokkyPooBah' Khoo
  *
  * MIT LICENSE Copyright 2016 Sikoba LTD
  *
@@ -99,22 +99,28 @@ contract SikobaPresale is Owned {
     uint256 public constant PRESALE_START_DATE = 1491393600;
     uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 2 weeks;
 
+    // Owner can clawback after a date in the future, so no ethers remain
+    // trapped in the contract. This will only be relevant if the
+    // minimum funding level is not reached
+    // 01/01/2018 @ 12:00pm (UTC) 2018-01-01T12:00:00+00:00 in ISO 8601
+    uint256 public constant OWNER_CLAWBACK_DATE = 1514808000;
+
     /// @notice Keep track of all participants contributions, including both the
     ///         preallocation and public phases
     /// @dev Name complies with ERC20 token standard, etherscan for example will recognize
     ///      this and show the balances of the address
     mapping (address => uint256) public balanceOf;
 
-    /// @notice Log an event for each funding contribution, including the preallocated funds
-    ///         and funds submitted during the public phase
-    event LogParticipation(address indexed sender, uint256 value, uint256 timestamp, bool isPreallocation);
+    /// @notice Log an event for each funding contributed during the public phase
+    /// @notice Events are not logged when the constructor is being executed during
+    ///         deployment, so the preallocations will not be logged
+    event LogParticipation(address indexed sender, uint256 value, uint256 timestamp);
 
     function SikobaPresale () payable {
         assertEquals(TOTAL_PREALLOCATION_IN_WEI, msg.value);
         // Pre-allocations
         addBalance(0xdeadbeef, 10 wei, true);
         addBalance(0xcafebabe, 5 wei, true);
-        // TODO: Check the following line
         assertEquals(TOTAL_PREALLOCATION_IN_WEI, totalFunding);
     }
 
@@ -143,8 +149,8 @@ contract SikobaPresale is Owned {
     }
 
     /// @notice The owner can withdraw ethers after the presale has completed,
-    ///         only if the minimum funding amount has been reached
-    function ownerWithdraw(uint256 value) external onlyOwner payable {
+    ///         only if the minimum funding level has been reached
+    function ownerWithdraw(uint256 value) external onlyOwner {
         // The owner cannot withdraw before the presale ends
         if (now <= PRESALE_END_DATE) throw;
         // The owner cannot withdraw if the presale did not reach the minimum funding amount
@@ -154,8 +160,8 @@ contract SikobaPresale is Owned {
     }
 
     /// @notice The participant will need to withdraw their funds from this contract if
-    ///         the presale has failed by not reaching the minimum funding amount
-    function participantWithdrawIfPresaleFailed(uint256 value) external {
+    ///         the presale has not achieved the minimum funding level
+    function participantWithdrawIfMinimumFundingNotReached(uint256 value) external {
         // Participant cannot withdraw before the presale ends
         if (now <= PRESALE_END_DATE) throw;
         // Participant cannot withdraw if the minimum funding amount has been reached
@@ -168,6 +174,16 @@ contract SikobaPresale is Owned {
         if (!msg.sender.send(value)) throw;
     }
 
+    /// @notice The owner can clawback any ethers after a date in the future, so no
+    ///         ethers remain trapped in this contract. This will only be relevant
+    ///         if the minimum funding level is not reached
+    function ownerClawback() external onlyOwner {
+        // The owner cannot withdraw before the clawback date
+        if (now < OWNER_CLAWBACK_DATE) throw;
+        // Send remaining funds back to the owner
+        if (!owner.send(this.balance)) throw;
+    }
+
     /// @dev Keep track of participants contributions and the total funding amount
     function addBalance(address participant, uint256 value, bool isPreallocation) private {
         // Participant's balance is increased by the sent amount
@@ -175,7 +191,7 @@ contract SikobaPresale is Owned {
         // Keep track of the total funding amount
         totalFunding = safeIncrement(totalFunding, value);
         // Log an event of the participant's contribution
-        LogParticipation(participant, value, now, isPreallocation);
+        LogParticipation(participant, value, now);
     }
 
     /// @dev Throw an exception if the amounts are not equal
