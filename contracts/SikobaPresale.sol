@@ -52,14 +52,17 @@ contract Owned {
 ///  - Read all of the code and use creative and lateral thinking to discover bugs
 ///  # Security reviews done:
 ///  Date         Auditors       Short summary of the review executed
-///  2017 MAR 3 - Roland Kofler  - NO SECURITY REVIEW DONE
-///  2017 MAR 7 - Roland Kofler, - Informal Security Review; added overflow protections;
-///               Alex Kampa       fixed wrong inequality operators; added maximum amount
-//                                 per transactions
-///  2017 MAR 7 - Alex Kampa     - Some code clean up; removed restriction of
-///                                MINIMUM_PARTICIPATION_AMOUNT for preallocations
-///  2017 MAR 8 - Bok Khoo       - Complete security review and modifications
-///  2017 MAR 9 - Roland Kofler  - Check the diffs between MAR 8 and MAR 7 versions
+///  2017 MAR 3  - Roland Kofler  - NO SECURITY REVIEW DONE
+///  2017 MAR 7  - Roland Kofler, - Informal Security Review; added overflow protections;
+///                Alex Kampa       fixed wrong inequality operators; added maximum amount
+///                                 per transactions
+///  2017 MAR 7  - Alex Kampa     - Some code clean up; removed restriction of
+///                                 MINIMUM_PARTICIPATION_AMOUNT for preallocations
+///  2017 MAR 8  - Bok Khoo       - Complete security review and modifications
+///  2017 MAR 9  - Roland Kofler  - Check the diffs between MAR 8 and MAR 7 versions
+///  2017 MAR 12 - Bok Khoo       - Renamed TOTAL_PREALLOCATION_IN_WEI
+///                                 to TOTAL_PREALLOCATION.
+///                                 Removed isPreAllocation from addBalance(...)
 /// ----------------------------------------------------------------------------------------
 contract SikobaPresale is Owned {
     // -------------------------------------------------------------------------------------
@@ -68,7 +71,7 @@ contract SikobaPresale is Owned {
     // 2. Adjust PRESALE_MINIMUM_FUNDING and PRESALE_MAXIMUM_FUNDING to desired EUR
     //    equivalents
     // 3. Adjust PRESALE_START_DATE and confirm the presale period
-    // 4. Update TOTAL_PREALLOCATION_IN_WEI to the total preallocations received
+    // 4. Update TOTAL_PREALLOCATION to the total preallocations received
     // 5. Add each preallocation address and funding amount from the Sikoba bookmaker
     //    to the constructor function
     // 6. Test the deployment to a dev blockchain or Testnet to confirm the constructor
@@ -91,7 +94,7 @@ contract SikobaPresale is Owned {
     uint256 public constant PRESALE_MAXIMUM_FUNDING = 18000 ether;
 
     // Total preallocation in wei
-    uint256 public constant TOTAL_PREALLOCATION_IN_WEI = 15 ether;
+    uint256 public constant TOTAL_PREALLOCATION = 15 ether;
 
     // Public presale period
     // Starts 04/05/2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
@@ -117,11 +120,11 @@ contract SikobaPresale is Owned {
     event LogParticipation(address indexed sender, uint256 value, uint256 timestamp);
 
     function SikobaPresale () payable {
-        assertEquals(TOTAL_PREALLOCATION_IN_WEI, msg.value);
+        assertEquals(TOTAL_PREALLOCATION, msg.value);
         // Pre-allocations
-        addBalance(0xdeadbeef, 10 wei, true);
-        addBalance(0xcafebabe, 5 wei, true);
-        assertEquals(TOTAL_PREALLOCATION_IN_WEI, totalFunding);
+        addBalance(0xdeadbeef, 10 wei);
+        addBalance(0xcafebabe, 5 wei);
+        assertEquals(TOTAL_PREALLOCATION, totalFunding);
     }
 
     /// @notice A participant sends a contribution to the contract's address
@@ -145,7 +148,7 @@ contract SikobaPresale is Owned {
         // funding amount
         if (safeIncrement(totalFunding, msg.value) > PRESALE_MAXIMUM_FUNDING) throw;
         // Register the participant's contribution
-        addBalance(msg.sender, msg.value, false);
+        addBalance(msg.sender, msg.value);
     }
 
     /// @notice The owner can withdraw ethers after the presale has completed,
@@ -185,7 +188,7 @@ contract SikobaPresale is Owned {
     }
 
     /// @dev Keep track of participants contributions and the total funding amount
-    function addBalance(address participant, uint256 value, bool isPreallocation) private {
+    function addBalance(address participant, uint256 value) private {
         // Participant's balance is increased by the sent amount
         balanceOf[participant] = safeIncrement(balanceOf[participant], value);
         // Keep track of the total funding amount
