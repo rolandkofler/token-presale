@@ -52,17 +52,18 @@ contract Owned {
 ///  - Read all of the code and use creative and lateral thinking to discover bugs
 ///  # Security reviews done:
 ///  Date         Auditors       Short summary of the review executed
-///  2017 MAR 3  - Roland Kofler  - NO SECURITY REVIEW DONE
-///  2017 MAR 7  - Roland Kofler, - Informal Security Review; added overflow protections;
+///  Mar 03 2017 - Roland Kofler  - NO SECURITY REVIEW DONE
+///  Mar 07 2017 - Roland Kofler, - Informal Security Review; added overflow protections;
 ///                Alex Kampa       fixed wrong inequality operators; added maximum amount
 ///                                 per transactions
-///  2017 MAR 7  - Alex Kampa     - Some code clean up; removed restriction of
+///  Mar 07 2017 - Alex Kampa     - Some code clean up; removed restriction of
 ///                                 MINIMUM_PARTICIPATION_AMOUNT for preallocations
-///  2017 MAR 8  - Bok Khoo       - Complete security review and modifications
-///  2017 MAR 9  - Roland Kofler  - Check the diffs between MAR 8 and MAR 7 versions
-///  2017 MAR 12 - Bok Khoo       - Renamed TOTAL_PREALLOCATION_IN_WEI
+///  Mar 08 2017 - Bok Khoo       - Complete security review and modifications
+///  Mar 09 2017 - Roland Kofler  - Check the diffs between MAR 8 and MAR 7 versions
+///  Mar 12 2017 - Bok Khoo       - Renamed TOTAL_PREALLOCATION_IN_WEI
 ///                                 to TOTAL_PREALLOCATION.
 ///                                 Removed isPreAllocation from addBalance(...)
+///  Mar 13 2017 - Bok Khoo       - Made dates in comments consistent
 /// ----------------------------------------------------------------------------------------
 contract SikobaPresale is Owned {
     // -------------------------------------------------------------------------------------
@@ -97,7 +98,7 @@ contract SikobaPresale is Owned {
     uint256 public constant TOTAL_PREALLOCATION = 15 ether;
 
     // Public presale period
-    // Starts 04/05/2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
+    // Starts Apr 05 2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
     // Ends 2 weeks after the start
     uint256 public constant PRESALE_START_DATE = 1491393600;
     uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 2 weeks;
@@ -105,7 +106,7 @@ contract SikobaPresale is Owned {
     // Owner can clawback after a date in the future, so no ethers remain
     // trapped in the contract. This will only be relevant if the
     // minimum funding level is not reached
-    // 01/01/2018 @ 12:00pm (UTC) 2018-01-01T12:00:00+00:00 in ISO 8601
+    // Jan 01 2018 @ 12:00pm (UTC) 2018-01-01T12:00:00+00:00 in ISO 8601
     uint256 public constant OWNER_CLAWBACK_DATE = 1514808000;
 
     /// @notice Keep track of all participants contributions, including both the
