@@ -1,0 +1,40 @@
+=============== Feb 5, 2017 (AEDT) ===============
+17:19:55.514674 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+17:19:55.515042 db@open opening
+17:19:55.516213 version@stat F·[] S·0B[] Sc·[]
+17:19:55.516485 db@janitor F·2 G·0
+17:19:55.516719 db@open done T·1.611391ms
+17:19:55.516768 db@close closing
+17:19:55.516822 db@close done T·52.758µs
+=============== Feb 5, 2017 (AEDT) ===============
+17:19:55.517029 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+17:19:55.517156 version@stat F·[] S·0B[] Sc·[]
+17:19:55.517176 db@open opening
+17:19:55.517240 journal@recovery F·1
+17:19:55.518344 journal@recovery recovering @1
+17:19:55.536649 version@stat F·[] S·0B[] Sc·[]
+17:19:55.537289 db@janitor F·2 G·0
+17:19:55.537315 db@open done T·20.116862ms
+=============== Feb 5, 2017 (AEDT) ===============
+17:19:55.603367 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+17:19:55.603598 version@stat F·[] S·0B[] Sc·[]
+17:19:55.603612 db@open opening
+17:19:55.603666 journal@recovery F·1
+17:19:55.605157 journal@recovery recovering @2
+17:19:55.606143 memdb@flush created L0@4 N·25 S·1KiB "\x15\x89x..d\b',v15":"Ԡ\x80..\xad\xf3\x18,v16"
+17:19:55.607237 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+17:19:55.608159 db@janitor F·3 G·0
+17:19:55.608214 db@open done T·4.57742ms
+17:19:55.608779 db@close closing
+17:19:55.608959 db@close done T·178.482µs
+=============== Feb 5, 2017 (AEDT) ===============
+17:19:55.609655 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+17:19:55.609898 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+17:19:55.609967 db@open opening
+17:19:55.610019 journal@recovery F·1
+17:19:55.629081 journal@recovery recovering @5
+17:19:55.648369 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+17:19:55.649092 db@janitor F·3 G·0
+17:19:55.649115 db@open done T·39.140915ms
+17:24:45.048056 db@close closing
+17:24:45.048265 db@close done T·203.01µs

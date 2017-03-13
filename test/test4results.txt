@@ -1,0 +1,65 @@
+# Account                                                   EtherBalance Name
+1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100260.073155880000000000 Account #0 - Miner
+2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    95799.940894600000000000 Account #1 - Owner
+3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100999.996921240000000000 Account #2 - Preallocation Participant #1
+4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
+5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.989028280000000000 Account #4 - Presale Participant #1
+sikobaPresaleAddress=0xbd7780c8773a6c99163ea9c1fa870450bc216aa6 gas=800000 gasUsed=585090 cost=0.0117018 block=54 txId=0x0131946abad7cdb58a56cc3c43af227035e1d1b395eb82475fecbd32f7b8605b
+# Account                                                   EtherBalance Name
+1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100270.084857680000000000 Account #0 - Miner
+2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    94399.929192800000000000 Account #1 - Owner
+3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100999.996921240000000000 Account #2 - Preallocation Participant #1
+4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
+5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.989028280000000000 Account #4 - Presale Participant #1
+6 0xbd7780c8773a6c99163ea9c1fa870450bc216aa6     1400.000000000000000000 SikobaPresaleContract #1
+PASS Test 4 Contract Setup
+sendContribution41TxId gas=100000 gasUsed=100000 cost=0.002 block=56 txId=0x3112d02bfe5648c0702bccd66361f80c20330c2e52c19ac460124866695d342e
+# Account                                                   EtherBalance Name
+1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100280.086857680000000000 Account #0 - Miner
+2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    94399.929192800000000000 Account #1 - Owner
+3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100999.996921240000000000 Account #2 - Preallocation Participant #1
+4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
+5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.987028280000000000 Account #4 - Presale Participant #1
+6 0xbd7780c8773a6c99163ea9c1fa870450bc216aa6     1400.000000000000000000 SikobaPresaleContract #1
+PASS Test 4.1 Participants cannot contribute
+preallocationParticipant1Account balance=1000
+participantWithdraw42TxId gas=100000 gasUsed=100000 cost=0.002 block=58 txId=0x28ac8e8b414aeb3b5114db7a88b46fa1ed8a8a943aa331c6ade9200648bcbb52
+# Account                                                   EtherBalance Name
+1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100290.088857680000000000 Account #0 - Miner
+2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    94399.929192800000000000 Account #1 - Owner
+3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100999.994921240000000000 Account #2 - Preallocation Participant #1
+4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
+5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.987028280000000000 Account #4 - Presale Participant #1
+6 0xbd7780c8773a6c99163ea9c1fa870450bc216aa6     1400.000000000000000000 SikobaPresaleContract #1
+PASS Test 4.2 Participant cannot withdraw
+clawback43TxId gas=100000 gasUsed=100000 cost=0.002 block=60 txId=0xb78eca1d1f326b43e1e4b831553861088f106c98f0ca00cbdb3df43cd074fb06
+# Account                                                   EtherBalance Name
+1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100300.090857680000000000 Account #0 - Miner
+2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    94399.927192800000000000 Account #1 - Owner
+3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100999.994921240000000000 Account #2 - Preallocation Participant #1
+4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
+5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.987028280000000000 Account #4 - Presale Participant #1
+6 0xbd7780c8773a6c99163ea9c1fa870450bc216aa6     1400.000000000000000000 SikobaPresaleContract #1
+PASS Test 4.3 Owner cannot clawback
+sikobaPresaleAddress balance=1400
+Test 4.4 Owner can withdraw partial amounts - withdrawing 100 ETH
+ownerWithdrawPartial44TxId gas=100000 gasUsed=29203 cost=0.00058406 block=62 txId=0x95ba040f6ea48274f249b3676bf71e480f08f19840ef34ad9c2db710116548c5
+# Account                                                   EtherBalance Name
+1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100310.091441740000000000 Account #0 - Miner
+2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    94499.926608740000000000 Account #1 - Owner
+3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100999.994921240000000000 Account #2 - Preallocation Participant #1
+4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
+5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.987028280000000000 Account #4 - Presale Participant #1
+6 0xbd7780c8773a6c99163ea9c1fa870450bc216aa6     1300.000000000000000000 SikobaPresaleContract #1
+PASS Test 4.4 Owner can withdraw partial amounts
+sikobaPresaleAddress balance=1300
+Test 4.5 Owner can withdraw full amount - withdrawing remainder
+ownerWithdrawRemainder45TxId gas=100000 gasUsed=29203 cost=0.00058406 block=64 txId=0x4ad9160d65aea2aef202b3b93fbc9c12d7b76f8bbbc16d971234e5d45a3440ff
+# Account                                                   EtherBalance Name
+1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100320.092025800000000000 Account #0 - Miner
+2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    95799.926024680000000000 Account #1 - Owner
+3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100999.994921240000000000 Account #2 - Preallocation Participant #1
+4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
+5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.987028280000000000 Account #4 - Presale Participant #1
+6 0xbd7780c8773a6c99163ea9c1fa870450bc216aa6        0.000000000000000000 SikobaPresaleContract #1
+PASS Test 4.5 Owner can withdraw full amount

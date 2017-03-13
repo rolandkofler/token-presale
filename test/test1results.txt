@@ -1,0 +1,32 @@
+# Account                                                   EtherBalance Name
+1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100045.000000000000000000 Account #0 - Miner
+2 0x0014060ff383c9b21c6840a3b14aab06741e5c49   100000.000000000000000000 Account #1 - Owner
+3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100000.000000000000000000 Account #2 - Preallocation Participant #1
+4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
+5 0x004e64833635cd1056b948b57286b7c91e62731c   100000.000000000000000000 Account #4 - Presale Participant #1
+sikobaPresaleAddress=null gas=800000 gasUsed=800000 cost=0.016 block=11 txId=0x7e7a7401b2326a81040345cd98f17938a53fc3b86645f0bfc5a8cce0f9c34624
+# Account                                                   EtherBalance Name
+1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100055.016000000000000000 Account #0 - Miner
+2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    99999.984000000000000000 Account #1 - Owner
+3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100000.000000000000000000 Account #2 - Preallocation Participant #1
+4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
+5 0x004e64833635cd1056b948b57286b7c91e62731c   100000.000000000000000000 Account #4 - Presale Participant #1
+PASS Test 1.1 Preallocation balances incorrect – fail deployment
+sikobaPresaleAddress=0xe9ba90b474ef72aa062d89a319c3e15b31e8fe65 gas=800000 gasUsed=585090 cost=0.0117018 block=13 txId=0xcf960cd03b9d1be89ea5866cfb32de5a7d2908f551c943ae6ef20be659506882
+# Account                                                   EtherBalance Name
+1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100065.027701800000000000 Account #0 - Miner
+2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    98599.972298200000000000 Account #1 - Owner
+3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100000.000000000000000000 Account #2 - Preallocation Participant #1
+4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
+5 0x004e64833635cd1056b948b57286b7c91e62731c   100000.000000000000000000 Account #4 - Presale Participant #1
+6 0xe9ba90b474ef72aa062d89a319c3e15b31e8fe65     1400.000000000000000000 SikobaPresaleContract #1
+PASS Test 1.2 Preallocation balances correct – deploy
+sendContributionFailTxId gas=100000 gasUsed=100000 cost=0.002 block=15 txId=0x54ca7b089f0addb8c9f5b58e181bfcf20aab9c5514e0a9e29a15acf50193d7c3
+# Account                                                   EtherBalance Name
+1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100075.029701800000000000 Account #0 - Miner
+2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    98599.972298200000000000 Account #1 - Owner
+3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100000.000000000000000000 Account #2 - Preallocation Participant #1
+4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
+5 0x004e64833635cd1056b948b57286b7c91e62731c    99999.998000000000000000 Account #4 - Presale Participant #1
+6 0xe9ba90b474ef72aa062d89a319c3e15b31e8fe65     1400.000000000000000000 SikobaPresaleContract #1
+PASS Test 1.3 No one can contribute to the contract
