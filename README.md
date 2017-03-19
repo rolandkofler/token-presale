@@ -5,7 +5,7 @@ presale web page http://www.sikoba.com/www/presale/index.html
 security review https://www.bokconsulting.com.au/blog/the-sikoba-presale-smart-contract-security-audit/
 
 For questions about the presale, please contact Aleksander Kampa / ak@sikoba.com / +352 691 46 85 81
-
+For technical questions, please contact Roland Kofler / roland.kofler@gmail.com
 
 ## Sikoba Bounty Program
 
