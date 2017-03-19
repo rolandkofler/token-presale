@@ -91,8 +91,8 @@ contract SikobaPresale is Owned {
     uint256 public constant MAXIMUM_PARTICIPATION_AMOUNT = 250 ether;
 
     // Minimum and maximum goals of the presale
-    uint256 public constant PRESALE_MINIMUM_FUNDING =  9000 ether;
-    uint256 public constant PRESALE_MAXIMUM_FUNDING = 18000 ether;
+    uint256 public constant PRESALE_MINIMUM_FUNDING =  6000 ether;
+    uint256 public constant PRESALE_MAXIMUM_FUNDING = 12000 ether;
 
     // Total preallocation in wei
     uint256 public constant TOTAL_PREALLOCATION = 15 ether;
