@@ -39,7 +39,7 @@ We ask that:
 - You make a good faith effort to avoid privacy violations and disruptions to others, including (but not limited to) destruction of data and interruption or degradation of our services.
 - You do not exploit a security issue you discover for any reason. (This includes demonstrating additional risk, such as attempted compromise of sensitive company data or probing for additional issues.)
 - You do not violate any other applicable laws or regulations.
-## Contact
+#### Contact
 Email your submissions to: secure@sikoba.com
 
 Import the public key for this: curl https://keybase.io/sikoba/pgp_keys.asc | gpg --import
