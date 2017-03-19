@@ -26,6 +26,19 @@ pragma solidity ^0.4.8;
  * SOFTWARE.
  **/
 
+
+/**
+ *
+ * Important information about the Sikoba token presale
+ *
+ * For details about the Sikoba token presale, and in particular to find out 
+ * about risks and limitations, please visit:
+ * 
+ * http://www.sikoba.com/www/presale/index.html
+ * 
+ **/
+
+
 contract Owned {
     address public owner;
 
