@@ -1,4 +1,4 @@
-#Sikoba Token Presale
+# Sikoba Token Presale
 security review https://www.bokconsulting.com.au/blog/the-sikoba-presale-smart-contract-security-audit/
 
 ## Sikoba Bounty Program
@@ -29,8 +29,10 @@ Scope of Sikoba Bug Bounty Program
 Within scope are all solidity and EVM related exploits
 
 ## Submission deadline
-The official bug bounty ends on the day the presale contract is deployed on mainnet
+The official bug bounty ends on the day the presale contract is deployed on mainnet. 
+
 Even then major and severe bugs will be rewarded, but you have to contact sikoba in private over a secure channel.
+
 ### The following from the Gnosis Bounty hunt applies for this private phase:
 If you comply with the policies below when reporting a security issue to us, we will not initiate a lawsuit or law enforcement investigation against you in response to your report.
 
