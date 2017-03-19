@@ -4,6 +4,9 @@ presale web page http://www.sikoba.com/www/presale/index.html
 
 security review https://www.bokconsulting.com.au/blog/the-sikoba-presale-smart-contract-security-audit/
 
+For questions about the presale, please contact Aleksander Kampa / ak@sikoba.com / +352 691 46 85 81
+
+
 ## Sikoba Bounty Program
 
 The Sikoba presale is a seed program for the future sikoba token. Because Sikoba is early stage only a modest amount of money (hundred thousands of Euros, US Dollars) is required to fund the next steps.
@@ -19,6 +22,7 @@ The bounties are:
 - 28.50 ETH, ~1000 EUR + 2% of the Presale for a severe bug found
 
 ### Terminology
+
 - severe - the functionality does not work in main area 
 - major - the functionality does not work but not in main area (business can be provided)
 - minor - there functional problems but in area which is not affecting the proper execution
@@ -45,6 +49,7 @@ We ask that:
 - You make a good faith effort to avoid privacy violations and disruptions to others, including (but not limited to) destruction of data and interruption or degradation of our services.
 - You do not exploit a security issue you discover for any reason. (This includes demonstrating additional risk, such as attempted compromise of sensitive company data or probing for additional issues.)
 - You do not violate any other applicable laws or regulations.
+
 #### Contact
 Email your submissions to  (private phase only): secure@sikoba.com
 
