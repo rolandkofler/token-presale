@@ -35,7 +35,7 @@ Even then major and severe bugs will be rewarded, but you have to contact sikoba
 If you comply with the policies below when reporting a security issue to us, we will not initiate a lawsuit or law enforcement investigation against you in response to your report.
 
 We ask that:
--You give us reasonable time to investigate and mitigate an issue you report before making public any information about the report or sharing such information with others.
+- You give us reasonable time to investigate and mitigate an issue you report before making public any information about the report or sharing such information with others.
 - You make a good faith effort to avoid privacy violations and disruptions to others, including (but not limited to) destruction of data and interruption or degradation of our services.
 - You do not exploit a security issue you discover for any reason. (This includes demonstrating additional risk, such as attempted compromise of sensitive company data or probing for additional issues.)
 - You do not violate any other applicable laws or regulations.
