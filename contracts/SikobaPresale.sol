@@ -108,7 +108,7 @@ contract SikobaPresale is Owned {
     uint256 public constant PRESALE_MAXIMUM_FUNDING = 12000 ether;
 
     // Total preallocation in wei
-    uint256 public constant TOTAL_PREALLOCATION = 15 ether;
+    uint256 public constant TOTAL_PREALLOCATION = 15 wei;
 
     // Public presale period
     // Starts Apr 05 2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
