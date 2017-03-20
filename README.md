@@ -12,6 +12,8 @@ For technical questions, please contact Roland Kofler / roland.kofler@gmail.com
 
 The Sikoba presale is a seed program for the future sikoba token. Because Sikoba is early stage only a modest amount of money (hundred thousands of Euros, US Dollars) is required to fund the next steps.
 
+>Follow these steps for deployment https://github.com/sikoba/token-presale/blob/master/contracts/SikobaPresale.sol#L83
+
 The bounty program will be exercised on the commiteth.com platform by Status.im. 
 
 Read more: https://wiki.status.im/proposals/commiteth
