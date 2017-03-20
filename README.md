@@ -20,7 +20,7 @@ The bounties are:
 
 -  1.40 ETH,     ~50 EUR Minor bug found
 -  8.50 ETH,   ~300 EUR Major bug
-- 28.50 ETH, ~1000 EUR + 2% of the Presale for a severe bug found
+- 28.50 ETH, ~1000 EUR **+ 2% of the successful Presale** for a severe bug found
 
 ### Terminology
 
