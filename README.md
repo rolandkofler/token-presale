@@ -6,7 +6,7 @@ security review https://www.bokconsulting.com.au/blog/the-sikoba-presale-smart-c
 
 For questions about the presale, please contact Aleksander Kampa / ak@sikoba.com / +352 691 46 85 81
 
-For technical questions, please contact Roland Kofler / roland.kofler@gmail.com
+For technical questions [create an issue](https://github.com/sikoba/token-presale/issues) 
 
 ## Sikoba Bounty Program
 
