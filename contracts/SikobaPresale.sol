@@ -31,11 +31,11 @@ pragma solidity ^0.4.8;
  *
  * Important information about the Sikoba token presale
  *
- * For details about the Sikoba token presale, and in particular to find out 
+ * For details about the Sikoba token presale, and in particular to find out
  * about risks and limitations, please visit:
- * 
+ *
  * http://www.sikoba.com/www/presale/index.html
- * 
+ *
  **/
 
 
@@ -77,6 +77,8 @@ contract Owned {
 ///                                 to TOTAL_PREALLOCATION.
 ///                                 Removed isPreAllocation from addBalance(...)
 ///  Mar 13 2017 - Bok Khoo       - Made dates in comments consistent
+///  Apr 05 2017 - Roland Kofler  - removed the necessity of presale end before withdrawing
+///                                 thus price drops during presale can be mitigated
 /// ----------------------------------------------------------------------------------------
 contract SikobaPresale is Owned {
     // -------------------------------------------------------------------------------------
@@ -165,11 +167,9 @@ contract SikobaPresale is Owned {
         addBalance(msg.sender, msg.value);
     }
 
-    /// @notice The owner can withdraw ethers after the presale has completed,
+    /// @notice The owner can withdraw ethers already during presale,
     ///         only if the minimum funding level has been reached
     function ownerWithdraw(uint256 value) external onlyOwner {
-        // The owner cannot withdraw before the presale ends
-        if (now <= PRESALE_END_DATE) throw;
         // The owner cannot withdraw if the presale did not reach the minimum funding amount
         if (totalFunding < PRESALE_MINIMUM_FUNDING) throw;
         // Withdraw the amount requested

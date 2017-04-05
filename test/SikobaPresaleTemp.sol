@@ -100,14 +100,14 @@ contract SikobaPresale is Owned {
     // Public presale period
     // Starts Apr 05 2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
     // Ends 2 weeks after the start
-    uint256 public constant PRESALE_START_DATE = 1489417569; // Mon 13 Mar 2017 15:06:09 UTC
-    uint256 public constant PRESALE_END_DATE = 1489417869; // Mon 13 Mar 2017 15:11:09 UTC
+    uint256 public constant PRESALE_START_DATE = 1489928842; // 
+    uint256 public constant PRESALE_END_DATE = 1489929142; // 
 
     // Owner can clawback after a date in the future, so no ethers remain
     // trapped in the contract. This will only be relevant if the
     // minimum funding level is not reached
     // Jan 01 2018 @ 12:00pm (UTC) 2018-01-01T12:00:00+00:00 in ISO 8601
-    uint256 public constant OWNER_CLAWBACK_DATE = 1489418109; // Mon 13 Mar 2017 15:15:09 UTC
+    uint256 public constant OWNER_CLAWBACK_DATE = 1489929382; // 
 
     /// @notice Keep track of all participants contributions, including both the
     ///         preallocation and public phases
