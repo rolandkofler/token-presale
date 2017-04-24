@@ -7,7 +7,7 @@ pragma solidity ^0.4.8;
  *
  * Author Roland Kofler, Alex Kampa, Bok 'BokkyPooBah' Khoo
  *
- * MIT LICENSE Copyright 2016 Sikoba LTD
+ * MIT LICENSE Copyright 2017 Sikoba Ltd
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
