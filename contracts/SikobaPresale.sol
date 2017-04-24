@@ -79,6 +79,8 @@ contract Owned {
 ///  Mar 13 2017 - Bok Khoo       - Made dates in comments consistent
 ///  Apr 05 2017 - Roland Kofler  - removed the necessity of presale end before withdrawing
 ///                                 thus price drops during presale can be mitigated
+///  Apr 24 2017 - Alex Kampa     - edited constants and added pre-allocation amounts
+///                                 
 /// ----------------------------------------------------------------------------------------
 contract SikobaPresale is Owned {
     // -------------------------------------------------------------------------------------
@@ -102,21 +104,21 @@ contract SikobaPresale is Owned {
     uint256 public totalFunding;
 
     // Minimum and maximum amounts per transaction for public participants
-    uint256 public constant MINIMUM_PARTICIPATION_AMOUNT =   5 ether;
+    uint256 public constant MINIMUM_PARTICIPATION_AMOUNT =   1 ether;
     uint256 public constant MAXIMUM_PARTICIPATION_AMOUNT = 250 ether;
 
     // Minimum and maximum goals of the presale
-    uint256 public constant PRESALE_MINIMUM_FUNDING =  6000 ether;
-    uint256 public constant PRESALE_MAXIMUM_FUNDING = 12000 ether;
+    uint256 public constant PRESALE_MINIMUM_FUNDING = 4000 ether;
+    uint256 public constant PRESALE_MAXIMUM_FUNDING = 8000 ether;
 
     // Total preallocation in wei
-    uint256 public constant TOTAL_PREALLOCATION = 15 wei;
+    uint256 public constant TOTAL_PREALLOCATION = 496.46472668 ether;
 
     // Public presale period
-    // Starts Apr 05 2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
-    // Ends 2 weeks after the start
-    uint256 public constant PRESALE_START_DATE = 1491393600;
-    uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 2 weeks;
+    // Starts Apr 25 2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
+    // Ends May 15 2017 @ 12:00pm (UTC) 2017-05-15T12:00:00+00:00 in ISO 8601
+    uint256 public constant PRESALE_START_DATE = 1493121600;
+    uint256 public constant PRESALE_END_DATE = 1494849600;
 
     // Owner can clawback after a date in the future, so no ethers remain
     // trapped in the contract. This will only be relevant if the
@@ -138,8 +140,29 @@ contract SikobaPresale is Owned {
     function SikobaPresale () payable {
         assertEquals(TOTAL_PREALLOCATION, msg.value);
         // Pre-allocations
-        addBalance(0xdeadbeef, 10 wei);
-        addBalance(0xcafebabe, 5 wei);
+        addBalance(0xe902741cd4666e4023b7e3ab46d3de2985c996f1, 0.647 ether);
+        addBalance(0x98ab52e249646ca2b013af8f2e411bb90c1c9b4d, 66.98333494 ether);
+        addBalance(0x7c6003edeb99886e8d65b5a3af81cd82962266f6, 1.0508692 ether);
+        addBalance(0x7c6003edeb99886e8d65b5a3af81cd82962266f6, 1.9491308 ether);
+        addBalance(0x99a4f90e16c043197da52d5d8c9b36a106c27042, 13 ether);
+        addBalance(0x452f7faa5423e8d38435ffc5cfba6da806f159a5, 0.412 ether);
+        addBalance(0x7FEA1962E35D62059768C749bedd96cAB930D378, 127.8142 ether);
+        addBalance(0x0bfec3578b7174997efbf145b8d5f5b5b66f273f, 10 ether);
+        addBalance(0xB4f14EDd0e846727cAe9A4B866854ed1bfE95781, 110 ether);
+        addBalance(0xb6500cebed3334dcd9a5484d27a1986703bdcb1a, 0.9748227 ether);
+        addBalance(0x8fbce39ab5f2664506d6c3e3cd39f8a419784f62, 75.1 ether);
+        addBalance(0x665A816F54020a5A255b366b7763D5dfE6f87940, 9 ether);
+        addBalance(0x665A816F54020a5A255b366b7763D5dfE6f87940, 12 ether);
+        addBalance(0x9cb37d0ae943c8b4256e71f98b2dd0935e89344f, 10 ether);
+        addBalance(0x00f87d9949b8e96f7c70f9dd5a6951258729c5c3, 22.24507475 ether);
+        addBalance(0xff2694cd9ca6a72c7864749072fab8db6090a1ca, 10 ether);
+        addBalance(0xcb5a0bc5efc931c336fa844c920e070e6fc4e6ee, 0.27371429 ether);
+        addBalance(0xd956d333bf4c89cb4e3a3d833610817d8d4beda3, 1 ether);
+        addBalance(0xba43bbd58e0f389b5652a507c8f9d30891750c00, 2 ether);
+        addBalance(0x1203c41ae7469b837b340870ce4f2205b035e69f, 5 ether);
+        addBalance(0x8efdb5ee103c2295dab1410b4e3d1ed7a91584d4, 1 ether);
+        addBalance(0xed1b8bbae30a58dc1ce57bcd7dca51eb75e1fde9, 6.01458 ether);
+        addBalance(0x96050f871811344dd44c2f5b7bc9741dff296f5e, 10 ether);
         assertEquals(TOTAL_PREALLOCATION, totalFunding);
     }
 
