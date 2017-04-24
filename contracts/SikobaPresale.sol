@@ -140,29 +140,29 @@ contract SikobaPresale is Owned {
     function SikobaPresale () payable {
         assertEquals(TOTAL_PREALLOCATION, msg.value);
         // Pre-allocations
-        addBalance(0xe902741cd4666e4023b7e3ab46d3de2985c996f1, 0.647 ether);
-        addBalance(0x98ab52e249646ca2b013af8f2e411bb90c1c9b4d, 66.98333494 ether);
-        addBalance(0x7c6003edeb99886e8d65b5a3af81cd82962266f6, 1.0508692 ether);
-        addBalance(0x7c6003edeb99886e8d65b5a3af81cd82962266f6, 1.9491308 ether);
-        addBalance(0x99a4f90e16c043197da52d5d8c9b36a106c27042, 13 ether);
-        addBalance(0x452f7faa5423e8d38435ffc5cfba6da806f159a5, 0.412 ether);
+        addBalance(0xe902741cD4666E4023b7E3AB46D3DE2985c996f1, 0.647 ether);
+        addBalance(0x98aB52E249646cA2b013aF8F2E411bB90C1c9b4d, 66.98333494 ether);
+        addBalance(0x7C6003EDEB99886E8D65b5a3AF81Cd82962266f6, 1.0508692 ether);
+        addBalance(0x7C6003EDEB99886E8D65b5a3AF81Cd82962266f6, 1.9491308 ether);
+        addBalance(0x99a4f90e16C043197dA52d5d8c9B36A106c27042, 13 ether);
+        addBalance(0x452F7faa5423e8D38435FFC5cFBA6Da806F159a5, 0.412 ether);
         addBalance(0x7FEA1962E35D62059768C749bedd96cAB930D378, 127.8142 ether);
-        addBalance(0x0bfec3578b7174997efbf145b8d5f5b5b66f273f, 10 ether);
+        addBalance(0x0bFEc3578B7174997EFBf145b8d5f5b5b66F273f, 10 ether);
         addBalance(0xB4f14EDd0e846727cAe9A4B866854ed1bfE95781, 110 ether);
-        addBalance(0xb6500cebed3334dcd9a5484d27a1986703bdcb1a, 0.9748227 ether);
-        addBalance(0x8fbce39ab5f2664506d6c3e3cd39f8a419784f62, 75.1 ether);
+        addBalance(0xB6500cebED3334DCd9A5484D27a1986703BDcB1A, 0.9748227 ether);
+        addBalance(0x8FBCE39aB5f2664506d6C3e3CD39f8A419784f62, 75.1 ether);
         addBalance(0x665A816F54020a5A255b366b7763D5dfE6f87940, 9 ether);
         addBalance(0x665A816F54020a5A255b366b7763D5dfE6f87940, 12 ether);
-        addBalance(0x9cb37d0ae943c8b4256e71f98b2dd0935e89344f, 10 ether);
-        addBalance(0x00f87d9949b8e96f7c70f9dd5a6951258729c5c3, 22.24507475 ether);
-        addBalance(0xff2694cd9ca6a72c7864749072fab8db6090a1ca, 10 ether);
-        addBalance(0xcb5a0bc5efc931c336fa844c920e070e6fc4e6ee, 0.27371429 ether);
-        addBalance(0xd956d333bf4c89cb4e3a3d833610817d8d4beda3, 1 ether);
-        addBalance(0xba43bbd58e0f389b5652a507c8f9d30891750c00, 2 ether);
-        addBalance(0x1203c41ae7469b837b340870ce4f2205b035e69f, 5 ether);
-        addBalance(0x8efdb5ee103c2295dab1410b4e3d1ed7a91584d4, 1 ether);
-        addBalance(0xed1b8bbae30a58dc1ce57bcd7dca51eb75e1fde9, 6.01458 ether);
-        addBalance(0x96050f871811344dd44c2f5b7bc9741dff296f5e, 10 ether);
+        addBalance(0x9cB37d0Ae943C8B4256e71F98B2dD0935e89344f, 10 ether);
+        addBalance(0x00F87D9949B8E96f7c70F9Dd5a6951258729c5C3, 22.24507475 ether);
+        addBalance(0xFf2694cd9Ca6a72C7864749072Fab8DB6090a1Ca, 10 ether);
+        addBalance(0xCb5A0bC5EfC931C336fa844C920E070E6fc4e6ee, 0.27371429 ether);
+        addBalance(0xd956d333BF4C89Cb4e3A3d833610817D8D4bedA3, 1 ether);
+        addBalance(0xBA43Bbd58E0F389B5652a507c8F9d30891750C00, 2 ether);
+        addBalance(0x1203c41aE7469B837B340870CE4F2205b035E69F, 5 ether);
+        addBalance(0x8efdB5Ee103c2295dAb1410B4e3d1eD7A91584d4, 1 ether);
+        addBalance(0xed1B8bbAE30a58Dc1Ce57bCD7DcA51eB75e1fde9, 6.01458 ether);
+        addBalance(0x96050f871811344Dd44C2F5b7bc9741Dff296f5e, 10 ether);
         assertEquals(TOTAL_PREALLOCATION, totalFunding);
     }
 
