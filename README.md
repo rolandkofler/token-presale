@@ -28,7 +28,7 @@ The bounties are:
 
 - severe - the functionality does not work in main area 
 - major - the functionality does not work but not in main area (business can be provided)
-- minor - there functional problems but in area which is not affecting the proper execution
+- minor - there are functional problems but in area which is not affecting the proper execution
 
 
 Because commiteth itself is in beta and deployed on the testnet we mirror the rewarded addresses on testnet and on mainnet. While the bounty winner receives some test ether through the commiteth platform, the mainnet reward will be sent to the same address. One has to mention that Bountyhunters are advised to create their a own address for the hunt and take care that the private key is not leaked, just because it contains both testnet and mainnet Ether.
