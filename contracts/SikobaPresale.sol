@@ -1,10 +1,11 @@
 pragma solidity ^0.4.8;
 
 /**
- * SIKOBA PRESALE CONTRACTS
+ * FESTY PRESALE CONTRACTS
  *
- * Version 0.1
+ * Version 0.2
  *
+ * Based on sikoba/token-presale
  * Author Roland Kofler, Alex Kampa, Bok 'BokkyPooBah' Khoo
  *
  * MIT LICENSE Copyright 2017 Sikoba Ltd
@@ -29,12 +30,12 @@ pragma solidity ^0.4.8;
 
 /**
  *
- * Important information about the Sikoba token presale
+ * Important information about the Festy token presale
  *
- * For details about the Sikoba token presale, and in particular to find out
+ * For details about the Festy token presale, and in particular to find out
  * about risks and limitations, please visit:
  *
- * http://www.sikoba.com/www/presale/index.html
+ * http://www.festy.ie
  *
  **/
 
@@ -55,7 +56,7 @@ contract Owned {
 }
 
 /// ----------------------------------------------------------------------------------------
-/// @title Sikoba Presale Contract
+/// @title Festy Presale Contract
 /// @author Roland Kofler, Alex Kampa, Bok 'Bokky Poo Bah' Khoo
 /// @dev Changes to this contract will invalidate any security audits done before.
 /// It is MANDATORY to protocol audits in the "Security reviews done" section
@@ -80,24 +81,17 @@ contract Owned {
 ///  Apr 05 2017 - Roland Kofler  - removed the necessity of presale end before withdrawing
 ///                                 thus price drops during presale can be mitigated
 ///  Apr 24 2017 - Alex Kampa     - edited constants and added pre-allocation amounts
-///                                 
+///  Aug 18 2018 - Roland Kofler  - basic preps for adapting it to Festy.ie                                
 /// ----------------------------------------------------------------------------------------
-contract SikobaPresale is Owned {
+contract FestyPresale is Owned {
     // -------------------------------------------------------------------------------------
     // TODO Before deployment of contract to Mainnet
     // 1. Confirm MINIMUM_PARTICIPATION_AMOUNT and MAXIMUM_PARTICIPATION_AMOUNT below
     // 2. Adjust PRESALE_MINIMUM_FUNDING and PRESALE_MAXIMUM_FUNDING to desired EUR
     //    equivalents
     // 3. Adjust PRESALE_START_DATE and confirm the presale period
-    // 4. Update TOTAL_PREALLOCATION to the total preallocations received
-    // 5. Add each preallocation address and funding amount from the Sikoba bookmaker
-    //    to the constructor function
-    // 6. Test the deployment to a dev blockchain or Testnet to confirm the constructor
-    //    will not run out of gas as this will vary with the number of preallocation
-    //    account entries
-    // 7. A stable version of Solidity has been used. Check for any major bugs in the
+    // 4. A stable version of Solidity has been used. Check for any major bugs in the
     //    Solidity release announcements after this version.
-    // 8. Remember to send the preallocated funds when deploying the contract!
     // -------------------------------------------------------------------------------------
 
     // Keep track of the total funding amount
@@ -112,7 +106,7 @@ contract SikobaPresale is Owned {
     uint256 public constant PRESALE_MAXIMUM_FUNDING = 8000 ether;
 
     // Total preallocation in wei
-    uint256 public constant TOTAL_PREALLOCATION = 496.46472668 ether;
+    uint256 public constant TOTAL_PREALLOCATION = 0 ether;
 
     // Public presale period
     // Starts Apr 25 2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
@@ -138,32 +132,6 @@ contract SikobaPresale is Owned {
     event LogParticipation(address indexed sender, uint256 value, uint256 timestamp);
 
     function SikobaPresale () payable {
-        assertEquals(TOTAL_PREALLOCATION, msg.value);
-        // Pre-allocations
-        addBalance(0xe902741cD4666E4023b7E3AB46D3DE2985c996f1, 0.647 ether);
-        addBalance(0x98aB52E249646cA2b013aF8F2E411bB90C1c9b4d, 66.98333494 ether);
-        addBalance(0x7C6003EDEB99886E8D65b5a3AF81Cd82962266f6, 1.0508692 ether);
-        addBalance(0x7C6003EDEB99886E8D65b5a3AF81Cd82962266f6, 1.9491308 ether);
-        addBalance(0x99a4f90e16C043197dA52d5d8c9B36A106c27042, 13 ether);
-        addBalance(0x452F7faa5423e8D38435FFC5cFBA6Da806F159a5, 0.412 ether);
-        addBalance(0x7FEA1962E35D62059768C749bedd96cAB930D378, 127.8142 ether);
-        addBalance(0x0bFEc3578B7174997EFBf145b8d5f5b5b66F273f, 10 ether);
-        addBalance(0xB4f14EDd0e846727cAe9A4B866854ed1bfE95781, 110 ether);
-        addBalance(0xB6500cebED3334DCd9A5484D27a1986703BDcB1A, 0.9748227 ether);
-        addBalance(0x8FBCE39aB5f2664506d6C3e3CD39f8A419784f62, 75.1 ether);
-        addBalance(0x665A816F54020a5A255b366b7763D5dfE6f87940, 9 ether);
-        addBalance(0x665A816F54020a5A255b366b7763D5dfE6f87940, 12 ether);
-        addBalance(0x9cB37d0Ae943C8B4256e71F98B2dD0935e89344f, 10 ether);
-        addBalance(0x00F87D9949B8E96f7c70F9Dd5a6951258729c5C3, 22.24507475 ether);
-        addBalance(0xFf2694cd9Ca6a72C7864749072Fab8DB6090a1Ca, 10 ether);
-        addBalance(0xCb5A0bC5EfC931C336fa844C920E070E6fc4e6ee, 0.27371429 ether);
-        addBalance(0xd956d333BF4C89Cb4e3A3d833610817D8D4bedA3, 1 ether);
-        addBalance(0xBA43Bbd58E0F389B5652a507c8F9d30891750C00, 2 ether);
-        addBalance(0x1203c41aE7469B837B340870CE4F2205b035E69F, 5 ether);
-        addBalance(0x8efdB5Ee103c2295dAb1410B4e3d1eD7A91584d4, 1 ether);
-        addBalance(0xed1B8bbAE30a58Dc1Ce57bCD7DcA51eB75e1fde9, 6.01458 ether);
-        addBalance(0x96050f871811344Dd44C2F5b7bc9741Dff296f5e, 10 ether);
-        assertEquals(TOTAL_PREALLOCATION, totalFunding);
     }
 
     /// @notice A participant sends a contribution to the contract's address
