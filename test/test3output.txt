@@ -1,9 +1,9 @@
 Welcome to the Geth JavaScript console!
 
-instance: Geth/v1.5.9-stable-a07539fb/darwin/go1.8
+instance: Geth/v1.5.9-stable-a07539fb/linux/go1.7.3
 coinbase: 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e
-at block: 35 (Tue, 14 Mar 2017 02:14:52 AEDT)
- datadir: /Users/bok/Sikoba/test/testchain
+at block: 403 (Sun, 19 Mar 2017 14:15:44 CET)
+ datadir: /home/roland/git/sikobapresale/test/testchain
  modules: admin:1.0 debug:1.0 eth:1.0 miner:1.0 net:1.0 personal:1.0 rpc:1.0 txpool:1.0 web3:1.0
 
 > 
@@ -12,11 +12,11 @@ true
 undefined
 > 
 RESULT: # Account                                                   EtherBalance Name
-RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100195.054375320000000000 Account #0 - Miner
-RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    97199.956596400000000000 Account #1 - Owner
-RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171    99999.998000000000000000 Account #2 - Preallocation Participant #1
+RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   102025.227618440000000000 Account #0 - Miner
+RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    86399.805542520000000000 Account #1 - Owner
+RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   101999.991842480000000000 Account #2 - Preallocation Participant #1
 RESULT: 4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
-RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.991028280000000000 Account #4 - Presale Participant #1
+RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99699.974996560000000000 Account #4 - Presale Participant #1
 undefined
 > 
 > 
@@ -24,7 +24,7 @@ undefined
 > 
 true
 > 
-sikobaPresaleSource=pragma solidity ^0.4.8;contract Owned { address public owner; function Owned() { owner = msg.sender; } modifier onlyOwner() { if (msg.sender != owner) { throw; } _; }}contract SikobaPresale is Owned { uint256 public totalFunding; uint256 public constant MINIMUM_PARTICIPATION_AMOUNT = 10 ether; uint256 public constant MAXIMUM_PARTICIPATION_AMOUNT = 1000 ether; uint256 public constant PRESALE_MINIMUM_FUNDING = 1500 ether; uint256 public constant PRESALE_MAXIMUM_FUNDING = 2000 ether; uint256 public constant TOTAL_PREALLOCATION = 1400 ether; uint256 public constant PRESALE_START_DATE = 1489417493; uint256 public constant PRESALE_END_DATE = 1489417793; uint256 public constant OWNER_CLAWBACK_DATE = 1489418693; mapping (address => uint256) public balanceOf; event LogParticipation(address indexed sender, uint256 value, uint256 timestamp); function SikobaPresale () payable { assertEquals(TOTAL_PREALLOCATION, msg.value); addBalance(0x0020017ba4c67f76c76b1af8c41821ee54f37171, 1000 ether); addBalance(0x0036f6addb6d64684390f55a92f0f4988266901b, 400 ether); assertEquals(TOTAL_PREALLOCATION, totalFunding); } function () payable { if (now < PRESALE_START_DATE) throw; if (now > PRESALE_END_DATE) throw; if (msg.value < MINIMUM_PARTICIPATION_AMOUNT) throw; if (msg.value > MAXIMUM_PARTICIPATION_AMOUNT) throw; if (safeIncrement(totalFunding, msg.value) > PRESALE_MAXIMUM_FUNDING) throw; addBalance(msg.sender, msg.value); } function ownerWithdraw(uint256 value) external onlyOwner { if (now <= PRESALE_END_DATE) throw; if (totalFunding < PRESALE_MINIMUM_FUNDING) throw; if (!owner.send(value)) throw; } function participantWithdrawIfMinimumFundingNotReached(uint256 value) external { if (now <= PRESALE_END_DATE) throw; if (totalFunding >= PRESALE_MINIMUM_FUNDING) throw; if (balanceOf[msg.sender] < value) throw; balanceOf[msg.sender] = safeDecrement(balanceOf[msg.sender], value); if (!msg.sender.send(value)) throw; } function ownerClawback() external onlyOwner { if (now < OWNER_CLAWBACK_DATE) throw; if (!owner.send(this.balance)) throw; } function addBalance(address participant, uint256 value) private { balanceOf[participant] = safeIncrement(balanceOf[participant], value); totalFunding = safeIncrement(totalFunding, value); LogParticipation(participant, value, now); } function assertEquals(uint256 expectedValue, uint256 actualValue) private constant { if (expectedValue != actualValue) throw; } function safeIncrement(uint256 base, uint256 increment) private constant returns (uint256) { uint256 result = base + increment; if (result < base) throw; return result; } function safeDecrement(uint256 base, uint256 increment) private constant returns (uint256) { uint256 result = base - increment; if (result > base) throw; return result; }}
+sikobaPresaleSource=pragma solidity ^0.4.8;contract Owned { address public owner; function Owned() { owner = msg.sender; } modifier onlyOwner() { if (msg.sender != owner) { throw; } _; }}contract SikobaPresale is Owned { uint256 public totalFunding; uint256 public constant MINIMUM_PARTICIPATION_AMOUNT = 10 ether; uint256 public constant MAXIMUM_PARTICIPATION_AMOUNT = 1000 ether; uint256 public constant PRESALE_MINIMUM_FUNDING = 1500 ether; uint256 public constant PRESALE_MAXIMUM_FUNDING = 2000 ether; uint256 public constant TOTAL_PREALLOCATION = 1400 ether; uint256 public constant PRESALE_START_DATE = 1489928745; uint256 public constant PRESALE_END_DATE = 1489929045; uint256 public constant OWNER_CLAWBACK_DATE = 1489929945; mapping (address => uint256) public balanceOf; event LogParticipation(address indexed sender, uint256 value, uint256 timestamp); function SikobaPresale () payable { assertEquals(TOTAL_PREALLOCATION, msg.value); addBalance(0x0020017ba4c67f76c76b1af8c41821ee54f37171, 1000 ether); addBalance(0x0036f6addb6d64684390f55a92f0f4988266901b, 400 ether); assertEquals(TOTAL_PREALLOCATION, totalFunding); } function () payable { if (now < PRESALE_START_DATE) throw; if (now > PRESALE_END_DATE) throw; if (msg.value < MINIMUM_PARTICIPATION_AMOUNT) throw; if (msg.value > MAXIMUM_PARTICIPATION_AMOUNT) throw; if (safeIncrement(totalFunding, msg.value) > PRESALE_MAXIMUM_FUNDING) throw; addBalance(msg.sender, msg.value); } function ownerWithdraw(uint256 value) external onlyOwner { if (now <= PRESALE_END_DATE) throw; if (totalFunding < PRESALE_MINIMUM_FUNDING) throw; if (!owner.send(value)) throw; } function participantWithdrawIfMinimumFundingNotReached(uint256 value) external { if (now <= PRESALE_END_DATE) throw; if (totalFunding >= PRESALE_MINIMUM_FUNDING) throw; if (balanceOf[msg.sender] < value) throw; balanceOf[msg.sender] = safeDecrement(balanceOf[msg.sender], value); if (!msg.sender.send(value)) throw; } function ownerClawback() external onlyOwner { if (now < OWNER_CLAWBACK_DATE) throw; if (!owner.send(this.balance)) throw; } function addBalance(address participant, uint256 value) private { balanceOf[participant] = safeIncrement(balanceOf[participant], value); totalFunding = safeIncrement(totalFunding, value); LogParticipation(participant, value, now); } function assertEquals(uint256 expectedValue, uint256 actualValue) private constant { if (expectedValue != actualValue) throw; } function safeIncrement(uint256 base, uint256 increment) private constant returns (uint256) { uint256 result = base + increment; if (result < base) throw; return result; } function safeDecrement(uint256 base, uint256 increment) private constant returns (uint256) { uint256 result = base - increment; if (result > base) throw; return result; }}
 undefined
 > 
 undefined
@@ -36,7 +36,7 @@ undefined
 > 
 {
   <stdin>:Owned: {
-    code: "0x60606040523415600b57fe5b5b60008054600160a060020a03191633600160a060020a03161790555b5b609e806100376000396000f300606060405263ffffffff60e060020a6000350416638da5cb5b81146020575bfe5b3415602757fe5b602d6056565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058202b8ca83b25981e6d30c6fd0ecc86a3e7a4c3a6790abb05a022944db02b6d76a30029",
+    code: "0x60606040523415600b57fe5b5b60008054600160a060020a03191633600160a060020a03161790555b5b609e806100376000396000f300606060405263ffffffff60e060020a6000350416638da5cb5b81146020575bfe5b3415602757fe5b602d6056565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058202765edb196dad8c84bcd5cb3507bdcc16850354244baf59cf34a5793dc5c1a1e0029",
     info: {
       abiDefinition: [{...}, {...}],
       compilerOptions: "--combined-json bin,abi,userdoc,devdoc --add-std --optimize",
@@ -46,14 +46,14 @@ undefined
       },
       language: "Solidity",
       languageVersion: "0.4.9",
-      source: "pragma solidity ^0.4.8;contract Owned { address public owner; function Owned() { owner = msg.sender; } modifier onlyOwner() { if (msg.sender != owner) { throw; } _; }}contract SikobaPresale is Owned { uint256 public totalFunding; uint256 public constant MINIMUM_PARTICIPATION_AMOUNT = 10 ether; uint256 public constant MAXIMUM_PARTICIPATION_AMOUNT = 1000 ether; uint256 public constant PRESALE_MINIMUM_FUNDING = 1500 ether; uint256 public constant PRESALE_MAXIMUM_FUNDING = 2000 ether; uint256 public constant TOTAL_PREALLOCATION = 1400 ether; uint256 public constant PRESALE_START_DATE = 1489417493; uint256 public constant PRESALE_END_DATE = 1489417793; uint256 public constant OWNER_CLAWBACK_DATE = 1489418693; mapping (address => uint256) public balanceOf; event LogParticipation(address indexed sender, uint256 value, uint256 timestamp); function SikobaPresale () payable { assertEquals(TOTAL_PREALLOCATION, msg.value); addBalance(0x0020017ba4c67f76c76b1af8c41821ee54f37171, 1000 ether); addBalance(0x0036f6addb6d64684390f55a92f0f4988266901b, 400 ether); assertEquals(TOTAL_PREALLOCATION, totalFunding); } function () payable { if (now < PRESALE_START_DATE) throw; if (now > PRESALE_END_DATE) throw; if (msg.value < MINIMUM_PARTICIPATION_AMOUNT) throw; if (msg.value > MAXIMUM_PARTICIPATION_AMOUNT) throw; if (safeIncrement(totalFunding, msg.value) > PRESALE_MAXIMUM_FUNDING) throw; addBalance(msg.sender, msg.value); } function ownerWithdraw(uint256 value) external onlyOwner { if (now <= PRESALE_END_DATE) throw; if (totalFunding < PRESALE_MINIMUM_FUNDING) throw; if (!owner.send(value)) throw; } function participantWithdrawIfMinimumFundingNotReached(uint256 value) external { if (now <= PRESALE_END_DATE) throw; if (totalFunding >= PRESALE_MINIMUM_FUNDING) throw; if (balanceOf[msg.sender] < value) throw; balanceOf[msg.sender] = safeDecrement(balanceOf[msg.sender], value); if (!msg.sender.send(value)) throw; } function ownerClawback() external onlyOwner { if (now < OWNER_CLAWBACK_DATE) throw; if (!owner.send(this.balance)) throw; } function addBalance(address participant, uint256 value) private { balanceOf[participant] = safeIncrement(balanceOf[participant], value); totalFunding = safeIncrement(totalFunding, value); LogParticipation(participant, value, now); } function assertEquals(uint256 expectedValue, uint256 actualValue) private constant { if (expectedValue != actualValue) throw; } function safeIncrement(uint256 base, uint256 increment) private constant returns (uint256) { uint256 result = base + increment; if (result < base) throw; return result; } function safeDecrement(uint256 base, uint256 increment) private constant returns (uint256) { uint256 result = base - increment; if (result > base) throw; return result; }}",
+      source: "pragma solidity ^0.4.8;contract Owned { address public owner; function Owned() { owner = msg.sender; } modifier onlyOwner() { if (msg.sender != owner) { throw; } _; }}contract SikobaPresale is Owned { uint256 public totalFunding; uint256 public constant MINIMUM_PARTICIPATION_AMOUNT = 10 ether; uint256 public constant MAXIMUM_PARTICIPATION_AMOUNT = 1000 ether; uint256 public constant PRESALE_MINIMUM_FUNDING = 1500 ether; uint256 public constant PRESALE_MAXIMUM_FUNDING = 2000 ether; uint256 public constant TOTAL_PREALLOCATION = 1400 ether; uint256 public constant PRESALE_START_DATE = 1489928745; uint256 public constant PRESALE_END_DATE = 1489929045; uint256 public constant OWNER_CLAWBACK_DATE = 1489929945; mapping (address => uint256) public balanceOf; event LogParticipation(address indexed sender, uint256 value, uint256 timestamp); function SikobaPresale () payable { assertEquals(TOTAL_PREALLOCATION, msg.value); addBalance(0x0020017ba4c67f76c76b1af8c41821ee54f37171, 1000 ether); addBalance(0x0036f6addb6d64684390f55a92f0f4988266901b, 400 ether); assertEquals(TOTAL_PREALLOCATION, totalFunding); } function () payable { if (now < PRESALE_START_DATE) throw; if (now > PRESALE_END_DATE) throw; if (msg.value < MINIMUM_PARTICIPATION_AMOUNT) throw; if (msg.value > MAXIMUM_PARTICIPATION_AMOUNT) throw; if (safeIncrement(totalFunding, msg.value) > PRESALE_MAXIMUM_FUNDING) throw; addBalance(msg.sender, msg.value); } function ownerWithdraw(uint256 value) external onlyOwner { if (now <= PRESALE_END_DATE) throw; if (totalFunding < PRESALE_MINIMUM_FUNDING) throw; if (!owner.send(value)) throw; } function participantWithdrawIfMinimumFundingNotReached(uint256 value) external { if (now <= PRESALE_END_DATE) throw; if (totalFunding >= PRESALE_MINIMUM_FUNDING) throw; if (balanceOf[msg.sender] < value) throw; balanceOf[msg.sender] = safeDecrement(balanceOf[msg.sender], value); if (!msg.sender.send(value)) throw; } function ownerClawback() external onlyOwner { if (now < OWNER_CLAWBACK_DATE) throw; if (!owner.send(this.balance)) throw; } function addBalance(address participant, uint256 value) private { balanceOf[participant] = safeIncrement(balanceOf[participant], value); totalFunding = safeIncrement(totalFunding, value); LogParticipation(participant, value, now); } function assertEquals(uint256 expectedValue, uint256 actualValue) private constant { if (expectedValue != actualValue) throw; } function safeIncrement(uint256 base, uint256 increment) private constant returns (uint256) { uint256 result = base + increment; if (result < base) throw; return result; } function safeDecrement(uint256 base, uint256 increment) private constant returns (uint256) { uint256 result = base - increment; if (result > base) throw; return result; }}",
       userDoc: {
         methods: {}
       }
     }
   },
   <stdin>:SikobaPresale: {
-    code: "0x60606040525b5b60008054600160a060020a03191633600160a060020a03161790555b610042684be4e7267b6ae00000346401000000006105e36100d682021704565b6100757220017ba4c67f76c76b1af8c41821ee54f37171683635c9adc5dea0000064010000000061031a6100e782021704565b6100a87236f6addb6d64684390f55a92f0f4988266901b6815af1d78b58c40000064010000000061031a6100e782021704565b6100d0684be4e7267b6ae000006001546100d6640100000000026105e3176401000000009004565b5b6101b1565b8181146100e257610000565b5b5050565b600160a060020a03821660009081526002602052604090205461011790826401000000006102fd61019482021704565b600160a060020a03831660009081526002602052604090205560015461014a90826401000000006102fd61019482021704565b600155604080518281524260208201528151600160a060020a038516927f0d0c0c5120500a67dc7f367c4b7f7afc5a39488be49264d6bd4a6c7e19b245ca928290030190a25b5050565b6000828201838110156101a657610000565b8091505b5092915050565b610620806101c06000396000f300606060405236156100b45763ffffffff60e060020a6000350416632350e76281146101355780632bc402fa1461014a5780632e87edd91461016c57806333f707d11461018e578063475ec95a146101a35780635a4a04a7146101c557806361962265146101e75780636586bb251461020957806370a082311461022b5780638da5cb5b14610259578063b63e93dc14610285578063b644ee4114610297578063f0b80000146102b9578063fe47a8a7146102db575b6101335b6358c6b5154210156100c957610000565b6358c6b6414211156100da57610000565b678ac7230489e800003410156100ef57610000565b683635c9adc5dea0000034111561010557610000565b686c6b935b8bbd40000061011b600154346102fd565b111561012657610000565b610130333461031a565b5b565b005b341561013d57fe5b6101336004356103ad565b005b341561015257fe5b61015a610463565b60408051918252519081900360200190f35b341561017457fe5b61015a610470565b60408051918252519081900360200190f35b341561019657fe5b61013360043561047c565b005b34156101ab57fe5b61015a6104f7565b60408051918252519081900360200190f35b34156101cd57fe5b61015a610504565b60408051918252519081900360200190f35b34156101ef57fe5b61015a61050c565b60408051918252519081900360200190f35b341561021157fe5b61015a610519565b60408051918252519081900360200190f35b341561023357fe5b61015a600160a060020a0360043516610526565b60408051918252519081900360200190f35b341561026157fe5b610269610538565b60408051600160a060020a039092168252519081900360200190f35b341561028d57fe5b610133610547565b005b341561029f57fe5b61015a6105b0565b60408051918252519081900360200190f35b34156102c157fe5b61015a6105b8565b60408051918252519081900360200190f35b34156102e357fe5b61015a6105c0565b60408051918252519081900360200190f35b60008282018381101561030f57610000565b8091505b5092915050565b600160a060020a03821660009081526002602052604090205461033d90826102fd565b600160a060020a03831660009081526002602052604090205560015461036390826102fd565b600155604080518281524260208201528151600160a060020a038516927f0d0c0c5120500a67dc7f367c4b7f7afc5a39488be49264d6bd4a6c7e19b245ca928290030190a25b5050565b6358c6b64142116103bd57610000565b600154685150ae84a8cdf0000090106103d557610000565b600160a060020a033316600090815260026020526040902054819010156103fb57610000565b600160a060020a03331660009081526002602052604090205461041e90826105c6565b600160a060020a033316600081815260026020526040808220939093559151909183156108fc02918491818181858888f19350505050151561045f57610000565b5b50565b684be4e7267b6ae0000081565b678ac7230489e8000081565b60005433600160a060020a0390811691161461049757610000565b6358c6b64142116104a757610000565b685150ae84a8cdf0000060015410156104bf57610000565b60008054604051600160a060020a039091169183156108fc02918491818181858888f19350505050151561045f57610000565b5b5b50565b685150ae84a8cdf0000081565b6358c6b9c581565b686c6b935b8bbd40000081565b683635c9adc5dea0000081565b60026020526000908152604090205481565b600054600160a060020a031681565b60005433600160a060020a0390811691161461056257610000565b6358c6b9c542101561057357610000565b60008054604051600160a060020a0391821692309092163180156108fc0292909190818181858888f19350505050151561013057610000565b5b5b565b6358c6b64181565b6358c6b51581565b60015481565b60008183038381111561030f57610000565b8091505b5092915050565b8181146103a957610000565b5b50505600a165627a7a723058204e15726d2be8edfb7f3ae0a18bc30ce593f67cb87cd8a9519dde4c6e912b9bc40029",
+    code: "0x60606040525b5b60008054600160a060020a03191633600160a060020a03161790555b610042684be4e7267b6ae00000346401000000006105e36100d682021704565b6100757220017ba4c67f76c76b1af8c41821ee54f37171683635c9adc5dea0000064010000000061031a6100e782021704565b6100a87236f6addb6d64684390f55a92f0f4988266901b6815af1d78b58c40000064010000000061031a6100e782021704565b6100d0684be4e7267b6ae000006001546100d6640100000000026105e3176401000000009004565b5b6101b1565b8181146100e257610000565b5b5050565b600160a060020a03821660009081526002602052604090205461011790826401000000006102fd61019482021704565b600160a060020a03831660009081526002602052604090205560015461014a90826401000000006102fd61019482021704565b600155604080518281524260208201528151600160a060020a038516927f0d0c0c5120500a67dc7f367c4b7f7afc5a39488be49264d6bd4a6c7e19b245ca928290030190a25b5050565b6000828201838110156101a657610000565b8091505b5092915050565b610620806101c06000396000f300606060405236156100b45763ffffffff60e060020a6000350416632350e76281146101355780632bc402fa1461014a5780632e87edd91461016c57806333f707d11461018e578063475ec95a146101a35780635a4a04a7146101c557806361962265146101e75780636586bb251461020957806370a082311461022b5780638da5cb5b14610259578063b63e93dc14610285578063b644ee4114610297578063f0b80000146102b9578063fe47a8a7146102db575b6101335b6358ce82294210156100c957610000565b6358ce83554211156100da57610000565b678ac7230489e800003410156100ef57610000565b683635c9adc5dea0000034111561010557610000565b686c6b935b8bbd40000061011b600154346102fd565b111561012657610000565b610130333461031a565b5b565b005b341561013d57fe5b6101336004356103ad565b005b341561015257fe5b61015a610463565b60408051918252519081900360200190f35b341561017457fe5b61015a610470565b60408051918252519081900360200190f35b341561019657fe5b61013360043561047c565b005b34156101ab57fe5b61015a6104f7565b60408051918252519081900360200190f35b34156101cd57fe5b61015a610504565b60408051918252519081900360200190f35b34156101ef57fe5b61015a61050c565b60408051918252519081900360200190f35b341561021157fe5b61015a610519565b60408051918252519081900360200190f35b341561023357fe5b61015a600160a060020a0360043516610526565b60408051918252519081900360200190f35b341561026157fe5b610269610538565b60408051600160a060020a039092168252519081900360200190f35b341561028d57fe5b610133610547565b005b341561029f57fe5b61015a6105b0565b60408051918252519081900360200190f35b34156102c157fe5b61015a6105b8565b60408051918252519081900360200190f35b34156102e357fe5b61015a6105c0565b60408051918252519081900360200190f35b60008282018381101561030f57610000565b8091505b5092915050565b600160a060020a03821660009081526002602052604090205461033d90826102fd565b600160a060020a03831660009081526002602052604090205560015461036390826102fd565b600155604080518281524260208201528151600160a060020a038516927f0d0c0c5120500a67dc7f367c4b7f7afc5a39488be49264d6bd4a6c7e19b245ca928290030190a25b5050565b6358ce835542116103bd57610000565b600154685150ae84a8cdf0000090106103d557610000565b600160a060020a033316600090815260026020526040902054819010156103fb57610000565b600160a060020a03331660009081526002602052604090205461041e90826105c6565b600160a060020a033316600081815260026020526040808220939093559151909183156108fc02918491818181858888f19350505050151561045f57610000565b5b50565b684be4e7267b6ae0000081565b678ac7230489e8000081565b60005433600160a060020a0390811691161461049757610000565b6358ce835542116104a757610000565b685150ae84a8cdf0000060015410156104bf57610000565b60008054604051600160a060020a039091169183156108fc02918491818181858888f19350505050151561045f57610000565b5b5b50565b685150ae84a8cdf0000081565b6358ce86d981565b686c6b935b8bbd40000081565b683635c9adc5dea0000081565b60026020526000908152604090205481565b600054600160a060020a031681565b60005433600160a060020a0390811691161461056257610000565b6358ce86d942101561057357610000565b60008054604051600160a060020a0391821692309092163180156108fc0292909190818181858888f19350505050151561013057610000565b5b5b565b6358ce835581565b6358ce822981565b60015481565b60008183038381111561030f57610000565b8091505b5092915050565b8181146103a957610000565b5b50505600a165627a7a72305820a04e401b24429bf9fed3f89d0a5326a351e654e01ff12cf352443df5e3bc99670029",
     info: {
       abiDefinition: [{...}, {...}, {...}, {...}, {...}, {...}, {...}, {...}, {...}, {...}, {...}, {...}, {...}, {...}, {...}, {...}, {...}],
       compilerOptions: "--combined-json bin,abi,userdoc,devdoc --add-std --optimize",
@@ -63,7 +63,7 @@ undefined
       },
       language: "Solidity",
       languageVersion: "0.4.9",
-      source: "pragma solidity ^0.4.8;contract Owned { address public owner; function Owned() { owner = msg.sender; } modifier onlyOwner() { if (msg.sender != owner) { throw; } _; }}contract SikobaPresale is Owned { uint256 public totalFunding; uint256 public constant MINIMUM_PARTICIPATION_AMOUNT = 10 ether; uint256 public constant MAXIMUM_PARTICIPATION_AMOUNT = 1000 ether; uint256 public constant PRESALE_MINIMUM_FUNDING = 1500 ether; uint256 public constant PRESALE_MAXIMUM_FUNDING = 2000 ether; uint256 public constant TOTAL_PREALLOCATION = 1400 ether; uint256 public constant PRESALE_START_DATE = 1489417493; uint256 public constant PRESALE_END_DATE = 1489417793; uint256 public constant OWNER_CLAWBACK_DATE = 1489418693; mapping (address => uint256) public balanceOf; event LogParticipation(address indexed sender, uint256 value, uint256 timestamp); function SikobaPresale () payable { assertEquals(TOTAL_PREALLOCATION, msg.value); addBalance(0x0020017ba4c67f76c76b1af8c41821ee54f37171, 1000 ether); addBalance(0x0036f6addb6d64684390f55a92f0f4988266901b, 400 ether); assertEquals(TOTAL_PREALLOCATION, totalFunding); } function () payable { if (now < PRESALE_START_DATE) throw; if (now > PRESALE_END_DATE) throw; if (msg.value < MINIMUM_PARTICIPATION_AMOUNT) throw; if (msg.value > MAXIMUM_PARTICIPATION_AMOUNT) throw; if (safeIncrement(totalFunding, msg.value) > PRESALE_MAXIMUM_FUNDING) throw; addBalance(msg.sender, msg.value); } function ownerWithdraw(uint256 value) external onlyOwner { if (now <= PRESALE_END_DATE) throw; if (totalFunding < PRESALE_MINIMUM_FUNDING) throw; if (!owner.send(value)) throw; } function participantWithdrawIfMinimumFundingNotReached(uint256 value) external { if (now <= PRESALE_END_DATE) throw; if (totalFunding >= PRESALE_MINIMUM_FUNDING) throw; if (balanceOf[msg.sender] < value) throw; balanceOf[msg.sender] = safeDecrement(balanceOf[msg.sender], value); if (!msg.sender.send(value)) throw; } function ownerClawback() external onlyOwner { if (now < OWNER_CLAWBACK_DATE) throw; if (!owner.send(this.balance)) throw; } function addBalance(address participant, uint256 value) private { balanceOf[participant] = safeIncrement(balanceOf[participant], value); totalFunding = safeIncrement(totalFunding, value); LogParticipation(participant, value, now); } function assertEquals(uint256 expectedValue, uint256 actualValue) private constant { if (expectedValue != actualValue) throw; } function safeIncrement(uint256 base, uint256 increment) private constant returns (uint256) { uint256 result = base + increment; if (result < base) throw; return result; } function safeDecrement(uint256 base, uint256 increment) private constant returns (uint256) { uint256 result = base - increment; if (result > base) throw; return result; }}",
+      source: "pragma solidity ^0.4.8;contract Owned { address public owner; function Owned() { owner = msg.sender; } modifier onlyOwner() { if (msg.sender != owner) { throw; } _; }}contract SikobaPresale is Owned { uint256 public totalFunding; uint256 public constant MINIMUM_PARTICIPATION_AMOUNT = 10 ether; uint256 public constant MAXIMUM_PARTICIPATION_AMOUNT = 1000 ether; uint256 public constant PRESALE_MINIMUM_FUNDING = 1500 ether; uint256 public constant PRESALE_MAXIMUM_FUNDING = 2000 ether; uint256 public constant TOTAL_PREALLOCATION = 1400 ether; uint256 public constant PRESALE_START_DATE = 1489928745; uint256 public constant PRESALE_END_DATE = 1489929045; uint256 public constant OWNER_CLAWBACK_DATE = 1489929945; mapping (address => uint256) public balanceOf; event LogParticipation(address indexed sender, uint256 value, uint256 timestamp); function SikobaPresale () payable { assertEquals(TOTAL_PREALLOCATION, msg.value); addBalance(0x0020017ba4c67f76c76b1af8c41821ee54f37171, 1000 ether); addBalance(0x0036f6addb6d64684390f55a92f0f4988266901b, 400 ether); assertEquals(TOTAL_PREALLOCATION, totalFunding); } function () payable { if (now < PRESALE_START_DATE) throw; if (now > PRESALE_END_DATE) throw; if (msg.value < MINIMUM_PARTICIPATION_AMOUNT) throw; if (msg.value > MAXIMUM_PARTICIPATION_AMOUNT) throw; if (safeIncrement(totalFunding, msg.value) > PRESALE_MAXIMUM_FUNDING) throw; addBalance(msg.sender, msg.value); } function ownerWithdraw(uint256 value) external onlyOwner { if (now <= PRESALE_END_DATE) throw; if (totalFunding < PRESALE_MINIMUM_FUNDING) throw; if (!owner.send(value)) throw; } function participantWithdrawIfMinimumFundingNotReached(uint256 value) external { if (now <= PRESALE_END_DATE) throw; if (totalFunding >= PRESALE_MINIMUM_FUNDING) throw; if (balanceOf[msg.sender] < value) throw; balanceOf[msg.sender] = safeDecrement(balanceOf[msg.sender], value); if (!msg.sender.send(value)) throw; } function ownerClawback() external onlyOwner { if (now < OWNER_CLAWBACK_DATE) throw; if (!owner.send(this.balance)) throw; } function addBalance(address participant, uint256 value) private { balanceOf[participant] = safeIncrement(balanceOf[participant], value); totalFunding = safeIncrement(totalFunding, value); LogParticipation(participant, value, now); } function assertEquals(uint256 expectedValue, uint256 actualValue) private constant { if (expectedValue != actualValue) throw; } function safeIncrement(uint256 base, uint256 increment) private constant returns (uint256) { uint256 result = base + increment; if (result < base) throw; return result; } function safeDecrement(uint256 base, uint256 increment) private constant returns (uint256) { uint256 result = base - increment; if (result > base) throw; return result; }}",
       userDoc: {
         methods: {}
       }
@@ -100,21 +100,21 @@ undefined
 ......... 
 ...... 
 ... 
-sikobaPresaleTx=0x8b186563f95fd2a9701f9ecd0f6d6990248b156aea7c64c136eae339a5393a67
+sikobaPresaleTx=0x4565f18409be8b561e5789d89cda2f5b5f453d18cbbc44768c87e201b7aca8fe
 undefined
 > 
 ... 
 undefined
 > 
-DATA: sikobaPresaleAddress=0x9a538a4dbfc9fa678ec782bb23fcbab065adbc6e
-RESULT: sikobaPresaleAddress=0x9a538a4dbfc9fa678ec782bb23fcbab065adbc6e gas=800000 gasUsed=585090 cost=0.0117018 block=41 txId=0x8b186563f95fd2a9701f9ecd0f6d6990248b156aea7c64c136eae339a5393a67
+DATA: sikobaPresaleAddress=0x597f2bb61742e36b7f6b56004501e507c1026709
+RESULT: sikobaPresaleAddress=0x597f2bb61742e36b7f6b56004501e507c1026709 gas=800000 gasUsed=585090 cost=0.0117018 block=408 txId=0x4565f18409be8b561e5789d89cda2f5b5f453d18cbbc44768c87e201b7aca8fe
 RESULT: # Account                                                   EtherBalance Name
-RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100205.066077120000000000 Account #0 - Miner
-RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    95799.944894600000000000 Account #1 - Owner
-RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171    99999.998000000000000000 Account #2 - Preallocation Participant #1
+RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   102040.239320240000000000 Account #0 - Miner
+RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    84999.793840720000000000 Account #1 - Owner
+RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   101999.991842480000000000 Account #2 - Preallocation Participant #1
 RESULT: 4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
-RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.991028280000000000 Account #4 - Presale Participant #1
-RESULT: 6 0x9a538a4dbfc9fa678ec782bb23fcbab065adbc6e     1400.000000000000000000 SikobaPresaleContract #1
+RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99699.974996560000000000 Account #4 - Presale Participant #1
+RESULT: 6 0x597f2bb61742e36b7f6b56004501e507c1026709     1400.000000000000000000 SikobaPresaleContract #1
 undefined
 > 
 undefined
@@ -138,16 +138,16 @@ undefined
 ... 
 undefined
 > 
-RESULT: withdraw31TxId gas=100000 gasUsed=100000 cost=0.002 block=43 txId=0x3cbb00d8aad3547d7837d3ef9de563ef29edbc4c51d9fc5ee3f3e80b97f3d923
+RESULT: withdraw31TxId gas=100000 gasUsed=100000 cost=0.002 block=410 txId=0xcbcf4320606aa63ceac446b60236a0f11d6f55637e036fb8bcec1bdc9267ac10
 undefined
 > 
 RESULT: # Account                                                   EtherBalance Name
-RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100215.068077120000000000 Account #0 - Miner
-RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    95799.942894600000000000 Account #1 - Owner
-RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171    99999.998000000000000000 Account #2 - Preallocation Participant #1
+RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   102050.241320240000000000 Account #0 - Miner
+RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    84999.791840720000000000 Account #1 - Owner
+RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   101999.991842480000000000 Account #2 - Preallocation Participant #1
 RESULT: 4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
-RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.991028280000000000 Account #4 - Presale Participant #1
-RESULT: 6 0x9a538a4dbfc9fa678ec782bb23fcbab065adbc6e     1400.000000000000000000 SikobaPresaleContract #1
+RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99699.974996560000000000 Account #4 - Presale Participant #1
+RESULT: 6 0x597f2bb61742e36b7f6b56004501e507c1026709     1400.000000000000000000 SikobaPresaleContract #1
 undefined
 > 
 100000
@@ -169,16 +169,16 @@ undefined
 ... 
 undefined
 > 
-RESULT: clawback32TxId gas=100000 gasUsed=100000 cost=0.002 block=45 txId=0x89caa85d487b2745366f078c4d2de486a8493b32b746a5686ef02b5fd87ef1f8
+RESULT: clawback32TxId gas=100000 gasUsed=100000 cost=0.002 block=412 txId=0x0a19d38e18b583bd512c258d31b790b4a3487dc0cd6b4a34ce60ada83e7bbbf8
 undefined
 > 
 RESULT: # Account                                                   EtherBalance Name
-RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100225.070077120000000000 Account #0 - Miner
-RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    95799.940894600000000000 Account #1 - Owner
-RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171    99999.998000000000000000 Account #2 - Preallocation Participant #1
+RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   102060.243320240000000000 Account #0 - Miner
+RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    84999.789840720000000000 Account #1 - Owner
+RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   101999.991842480000000000 Account #2 - Preallocation Participant #1
 RESULT: 4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
-RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.991028280000000000 Account #4 - Presale Participant #1
-RESULT: 6 0x9a538a4dbfc9fa678ec782bb23fcbab065adbc6e     1400.000000000000000000 SikobaPresaleContract #1
+RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99699.974996560000000000 Account #4 - Presale Participant #1
+RESULT: 6 0x597f2bb61742e36b7f6b56004501e507c1026709     1400.000000000000000000 SikobaPresaleContract #1
 undefined
 > 
 100000
@@ -200,16 +200,16 @@ undefined
 ... 
 undefined
 > 
-RESULT: sendContribution33TxId gas=100000 gasUsed=100000 cost=0.002 block=47 txId=0xded48885add3263b9e0572ab73a02893f761e064d3e29d526bf2e0ef67ed5926
+RESULT: sendContribution33TxId gas=100000 gasUsed=100000 cost=0.002 block=414 txId=0x0b413889e661e97ea9e7b374f7cb960dcc27560ed1da518d1b55da00dd2bbabc
 undefined
 > 
 RESULT: # Account                                                   EtherBalance Name
-RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100235.072077120000000000 Account #0 - Miner
-RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    95799.940894600000000000 Account #1 - Owner
-RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171    99999.998000000000000000 Account #2 - Preallocation Participant #1
+RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   102070.245320240000000000 Account #0 - Miner
+RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    84999.789840720000000000 Account #1 - Owner
+RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   101999.991842480000000000 Account #2 - Preallocation Participant #1
 RESULT: 4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
-RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.989028280000000000 Account #4 - Presale Participant #1
-RESULT: 6 0x9a538a4dbfc9fa678ec782bb23fcbab065adbc6e     1400.000000000000000000 SikobaPresaleContract #1
+RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99699.972996560000000000 Account #4 - Presale Participant #1
+RESULT: 6 0x597f2bb61742e36b7f6b56004501e507c1026709     1400.000000000000000000 SikobaPresaleContract #1
 undefined
 > 
 100000
@@ -236,16 +236,16 @@ undefined
 ... 
 undefined
 > 
-RESULT: participantWithdrawPartial34TxId gas=100000 gasUsed=34469 cost=0.00068938 block=49 txId=0x849641fe8c649aa88a36903e8177b83f7301ad7a337eec3a2626d1f59c32bfb9
+RESULT: participantWithdrawPartial34TxId gas=100000 gasUsed=34469 cost=0.00068938 block=416 txId=0x088ee6de3695af4aa60a905446da2a33342b39e9b29d7245fa3031ef8f3eaff0
 undefined
 > 
 RESULT: # Account                                                   EtherBalance Name
-RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100245.072766500000000000 Account #0 - Miner
-RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    95799.940894600000000000 Account #1 - Owner
-RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100099.997310620000000000 Account #2 - Preallocation Participant #1
+RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   102080.246009620000000000 Account #0 - Miner
+RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    84999.789840720000000000 Account #1 - Owner
+RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   102099.991153100000000000 Account #2 - Preallocation Participant #1
 RESULT: 4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
-RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.989028280000000000 Account #4 - Presale Participant #1
-RESULT: 6 0x9a538a4dbfc9fa678ec782bb23fcbab065adbc6e     1300.000000000000000000 SikobaPresaleContract #1
+RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99699.972996560000000000 Account #4 - Presale Participant #1
+RESULT: 6 0x597f2bb61742e36b7f6b56004501e507c1026709     1300.000000000000000000 SikobaPresaleContract #1
 undefined
 > 
 100000
@@ -272,16 +272,16 @@ undefined
 ... 
 undefined
 > 
-RESULT: participantWithdrawFull35TxId gas=100000 gasUsed=19469 cost=0.00038938 block=51 txId=0xbe4651a4ff9d8307ca75185cd41300483496ed4ab16efc68c91eedfdc42d88dd
+RESULT: participantWithdrawFull35TxId gas=100000 gasUsed=19469 cost=0.00038938 block=418 txId=0xc089dec38109480044c9b1492bc2cb23039faf56b38ab56862b2240cba768abb
 undefined
 > 
 RESULT: # Account                                                   EtherBalance Name
-RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   100255.073155880000000000 Account #0 - Miner
-RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    95799.940894600000000000 Account #1 - Owner
-RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   100999.996921240000000000 Account #2 - Preallocation Participant #1
+RESULT: 1 0x000d1009bd8f0b1301cc5edc28ed1222a3ce671e   102090.246399000000000000 Account #0 - Miner
+RESULT: 2 0x0014060ff383c9b21c6840a3b14aab06741e5c49    84999.789840720000000000 Account #1 - Owner
+RESULT: 3 0x0020017ba4c67f76c76b1af8c41821ee54f37171   102999.990763720000000000 Account #2 - Preallocation Participant #1
 RESULT: 4 0x0036f6addb6d64684390f55a92f0f4988266901b   100000.000000000000000000 Account #3 - Preallocation Participant #2
-RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99899.989028280000000000 Account #4 - Presale Participant #1
-RESULT: 6 0x9a538a4dbfc9fa678ec782bb23fcbab065adbc6e      400.000000000000000000 SikobaPresaleContract #1
+RESULT: 5 0x004e64833635cd1056b948b57286b7c91e62731c    99699.972996560000000000 Account #4 - Presale Participant #1
+RESULT: 6 0x597f2bb61742e36b7f6b56004501e507c1026709      400.000000000000000000 SikobaPresaleContract #1
 undefined
 > 
 100000
