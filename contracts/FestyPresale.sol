@@ -5,7 +5,7 @@ pragma solidity ^0.4.24;
  *
  * Version 0.3
  *
- * Based on sikoba/token-presale
+ * Based on sikoba/token-presa                                                                                                                                                                                                                                                                                                                                                                              le
  * Ownable from openzeppelin
  *
  * Author Roland Kofler, Alex Kampa, Bok 'BokkyPooBah' Khoo
@@ -147,11 +147,11 @@ contract FestyPresale is Ownable {
     uint256 public totalFunding;
 
     // Minimum and maximum amounts per transaction for public participants
-    uint256 public constant MINIMUM_PARTICIPATION_AMOUNT =   1 ether;
-    uint256 public constant MAXIMUM_PARTICIPATION_AMOUNT = 250 ether;
+    uint256 public constant MINIMUM_PARTICIPATION_AMOUNT =   0.25 ether;
+    uint256 public constant MAXIMUM_PARTICIPATION_AMOUNT = 8000 ether;
 
     // Minimum and maximum goals of the presale
-    uint256 public constant PRESALE_MINIMUM_FUNDING = 4000 ether;
+    uint256 public constant PRESALE_MINIMUM_FUNDING = 1000 ether;
     uint256 public constant PRESALE_MAXIMUM_FUNDING = 8000 ether;
 
     // Total preallocation in wei
@@ -160,14 +160,14 @@ contract FestyPresale is Ownable {
     // Public presale period
     // Starts Apr 25 2017 @ 12:00pm (UTC) 2017-04-05T12:00:00+00:00 in ISO 8601
     // Ends May 15 2017 @ 12:00pm (UTC) 2017-05-15T12:00:00+00:00 in ISO 8601
-    uint256 public constant PRESALE_START_DATE = 1493121600;
-    uint256 public constant PRESALE_END_DATE = 1494849600;
+    uint256 public constant PRESALE_START_DATE = 1535042641;
+    uint256 public constant PRESALE_END_DATE = 1535215441;
 
     // Owner can clawback after a date in the future, so no ethers remain
     // trapped in the contract. This will only be relevant if the
     // minimum funding level is not reached
     // Jan 01 2018 @ 12:00pm (UTC) 2018-01-01T12:00:00+00:00 in ISO 8601
-    uint256 public constant OWNER_CLAWBACK_DATE = 1514808000;
+    uint256 public constant OWNER_CLAWBACK_DATE = 1535215441;
 
     /// @notice Keep track of all participants contributions, including both the
     ///         preallocation and public phases
@@ -199,7 +199,7 @@ contract FestyPresale is Ownable {
         // A participant cannot send less than the minimum amount
         require (msg.value >= MINIMUM_PARTICIPATION_AMOUNT);
         // A participant cannot send more than the maximum amount
-        require (msg.value > MAXIMUM_PARTICIPATION_AMOUNT);
+        require (msg.value <= MAXIMUM_PARTICIPATION_AMOUNT);
         // A participant cannot send funds if the presale has been reached the maximum
         // funding amount
         require (safeIncrement(totalFunding, msg.value) <= PRESALE_MAXIMUM_FUNDING);
