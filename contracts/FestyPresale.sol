@@ -1,11 +1,13 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.24;
 
 /**
  * FESTY PRESALE CONTRACTS
  *
- * Version 0.2
+ * Version 0.3
  *
  * Based on sikoba/token-presale
+ * Ownable from openzeppelin
+ *
  * Author Roland Kofler, Alex Kampa, Bok 'BokkyPooBah' Khoo
  *
  * MIT LICENSE Copyright 2017 Sikoba Ltd
@@ -40,21 +42,67 @@ pragma solidity ^0.4.8;
  **/
 
 
-contract Owned {
-    address public owner;
+/**
+ * @title Ownable
+ * @dev The Ownable contract has an owner address, and provides basic authorization control
+ * functions, this simplifies the implementation of "user permissions".
+ */
+contract Ownable {
+  address public owner;
 
-    function Owned() {
-        owner = msg.sender;
-    }
 
-    modifier onlyOwner() {
-        if (msg.sender != owner) {
-            throw;
-        }
-        _;
-    }
+  event OwnershipRenounced(address indexed previousOwner);
+  event OwnershipTransferred(
+    address indexed previousOwner,
+    address indexed newOwner
+  );
+
+
+  /**
+   * @dev The Ownable constructor sets the original `owner` of the contract to the sender
+   * account.
+   */
+  constructor() public {
+    owner = msg.sender;
+  }
+
+  /**
+   * @dev Throws if called by any account other than the owner.
+   */
+  modifier onlyOwner() {
+    require(msg.sender == owner);
+    _;
+  }
+
+  /**
+   * @dev Allows the current owner to relinquish control of the contract.
+   * @notice Renouncing to ownership will leave the contract without an owner.
+   * It will not be possible to call the functions with the `onlyOwner`
+   * modifier anymore.
+   */
+  function renounceOwnership() public onlyOwner {
+    emit OwnershipRenounced(owner);
+    owner = address(0);
+  }
+
+  /**
+   * @dev Allows the current owner to transfer control of the contract to a newOwner.
+   * @param _newOwner The address to transfer ownership to.
+   */
+  function transferOwnership(address _newOwner) public onlyOwner {
+    _transferOwnership(_newOwner);
+  }
+
+  /**
+   * @dev Transfers control of the contract to a newOwner.
+   * @param _newOwner The address to transfer ownership to.
+   */
+  function _transferOwnership(address _newOwner) internal {
+    require(_newOwner != address(0));
+    emit OwnershipTransferred(owner, _newOwner);
+    owner = _newOwner;
+  }
 }
-
 /// ----------------------------------------------------------------------------------------
 /// @title Festy Presale Contract
 /// @author Roland Kofler, Alex Kampa, Bok 'Bokky Poo Bah' Khoo
@@ -82,8 +130,9 @@ contract Owned {
 ///                                 thus price drops during presale can be mitigated
 ///  Apr 24 2017 - Alex Kampa     - edited constants and added pre-allocation amounts
 ///  Aug 18 2018 - Roland Kofler  - basic preps for adapting it to Festy.ie                                
+///  Aug 23 2018 - Roland Kofler  - upgrading to Open Zeppelin Ownable, modernized `require` and function 
 /// ----------------------------------------------------------------------------------------
-contract FestyPresale is Owned {
+contract FestyPresale is Ownable {
     // -------------------------------------------------------------------------------------
     // TODO Before deployment of contract to Mainnet
     // 1. Confirm MINIMUM_PARTICIPATION_AMOUNT and MAXIMUM_PARTICIPATION_AMOUNT below
@@ -131,7 +180,7 @@ contract FestyPresale is Owned {
     ///         deployment, so the preallocations will not be logged
     event LogParticipation(address indexed sender, uint256 value, uint256 timestamp);
 
-    function SikobaPresale () payable {
+    function SikobaPresale () public payable {
     }
 
     /// @notice A participant sends a contribution to the contract's address
@@ -142,18 +191,18 @@ contract FestyPresale is Owned {
     ///         account
     /// @notice A participant's contribution will be rejected if the presale
     ///         has been funded to the maximum amount
-    function () payable {
+    function () payable public {
         // A participant cannot send funds before the presale start date
-        if (now < PRESALE_START_DATE) throw;
+        require (now >= PRESALE_START_DATE);
         // A participant cannot send funds after the presale end date
-        if (now > PRESALE_END_DATE) throw;
+        require (now <= PRESALE_END_DATE);
         // A participant cannot send less than the minimum amount
-        if (msg.value < MINIMUM_PARTICIPATION_AMOUNT) throw;
+        require (msg.value >= MINIMUM_PARTICIPATION_AMOUNT);
         // A participant cannot send more than the maximum amount
-        if (msg.value > MAXIMUM_PARTICIPATION_AMOUNT) throw;
+        require (msg.value > MAXIMUM_PARTICIPATION_AMOUNT);
         // A participant cannot send funds if the presale has been reached the maximum
         // funding amount
-        if (safeIncrement(totalFunding, msg.value) > PRESALE_MAXIMUM_FUNDING) throw;
+        require (safeIncrement(totalFunding, msg.value) <= PRESALE_MAXIMUM_FUNDING);
         // Register the participant's contribution
         addBalance(msg.sender, msg.value);
     }
@@ -162,24 +211,24 @@ contract FestyPresale is Owned {
     ///         only if the minimum funding level has been reached
     function ownerWithdraw(uint256 value) external onlyOwner {
         // The owner cannot withdraw if the presale did not reach the minimum funding amount
-        if (totalFunding < PRESALE_MINIMUM_FUNDING) throw;
+        require (totalFunding >= PRESALE_MINIMUM_FUNDING);
         // Withdraw the amount requested
-        if (!owner.send(value)) throw;
+        require (owner.send(value));
     }
 
     /// @notice The participant will need to withdraw their funds from this contract if
     ///         the presale has not achieved the minimum funding level
     function participantWithdrawIfMinimumFundingNotReached(uint256 value) external {
         // Participant cannot withdraw before the presale ends
-        if (now <= PRESALE_END_DATE) throw;
+        require (now > PRESALE_END_DATE);
         // Participant cannot withdraw if the minimum funding amount has been reached
-        if (totalFunding >= PRESALE_MINIMUM_FUNDING) throw;
+        require (totalFunding < PRESALE_MINIMUM_FUNDING);
         // Participant can only withdraw an amount up to their contributed balance
-        if (balanceOf[msg.sender] < value) throw;
+        require (balanceOf[msg.sender] >= value);
         // Participant's balance is reduced by the claimed amount.
         balanceOf[msg.sender] = safeDecrement(balanceOf[msg.sender], value);
         // Send ethers back to the participant's account
-        if (!msg.sender.send(value)) throw;
+        require (msg.sender.send(value));
     }
 
     /// @notice The owner can clawback any ethers after a date in the future, so no
@@ -187,9 +236,9 @@ contract FestyPresale is Owned {
     ///         if the minimum funding level is not reached
     function ownerClawback() external onlyOwner {
         // The owner cannot withdraw before the clawback date
-        if (now < OWNER_CLAWBACK_DATE) throw;
+        require (now >= OWNER_CLAWBACK_DATE);
         // Send remaining funds back to the owner
-        if (!owner.send(this.balance)) throw;
+        require (owner.send(address(this).balance));
     }
 
     /// @dev Keep track of participants contributions and the total funding amount
@@ -199,27 +248,27 @@ contract FestyPresale is Owned {
         // Keep track of the total funding amount
         totalFunding = safeIncrement(totalFunding, value);
         // Log an event of the participant's contribution
-        LogParticipation(participant, value, now);
+        emit LogParticipation(participant, value, now);
     }
 
     /// @dev Throw an exception if the amounts are not equal
-    function assertEquals(uint256 expectedValue, uint256 actualValue) private constant {
-        if (expectedValue != actualValue) throw;
+    function assertEquals(uint256 expectedValue, uint256 actualValue) private pure {
+        require (expectedValue == actualValue, "not equal");
     }
 
     /// @dev Add a number to a base value. Detect overflows by checking the result is larger
     ///      than the original base value.
-    function safeIncrement(uint256 base, uint256 increment) private constant returns (uint256) {
+    function safeIncrement(uint256 base, uint256 increment) private pure returns (uint256) {
         uint256 result = base + increment;
-        if (result < base) throw;
+        require (result >= base);
         return result;
     }
 
     /// @dev Subtract a number from a base value. Detect underflows by checking that the result
     ///      is smaller than the original base value
-    function safeDecrement(uint256 base, uint256 increment) private constant returns (uint256) {
+    function safeDecrement(uint256 base, uint256 increment) private pure returns (uint256) {
         uint256 result = base - increment;
-        if (result > base) throw;
+        require (result <= base);
         return result;
     }
 }
