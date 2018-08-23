@@ -180,9 +180,6 @@ contract FestyPresale is Ownable {
     ///         deployment, so the preallocations will not be logged
     event LogParticipation(address indexed sender, uint256 value, uint256 timestamp);
 
-    function SikobaPresale () public payable {
-    }
-
     /// @notice A participant sends a contribution to the contract's address
     ///         between the PRESALE_STATE_DATE and the PRESALE_END_DATE
     /// @notice Only contributions between the MINIMUM_PARTICIPATION_AMOUNT and
